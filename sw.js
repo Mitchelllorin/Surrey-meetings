@@ -1,6 +1,6 @@
 // Keeps the app working without signal. Always tries the network first, so a new
 // version of the meeting list shows up the next time someone opens the app online.
-const CACHE = "surrey-meetings-v2";
+const CACHE = "surrey-meetings-v3";
 const CORE = ["./", "./index.html", "./manifest.webmanifest", "./icon-192.png", "./icon-512.png"];
 
 self.addEventListener("install", e => {
