@@ -1,0 +1,246 @@
+<div class="wrap">
+  <header>
+    <h1 id="appTitle"></h1>
+    <p class="sub" id="appSub"></p>
+  </header>
+
+  <nav class="tabs" aria-label="Sections">
+    <button type="button" id="tab-meetings" data-tab="meetings" aria-pressed="true">Meetings</button>
+    <button type="button" id="tab-people" data-tab="people" aria-pressed="false">People</button>
+    <button type="button" id="tab-help" data-tab="help" aria-pressed="false">Help</button>
+  </nav>
+
+  <section data-view="meetings" id="view-meetings">
+    <div class="next" id="next" aria-live="polite"></div>
+    <nav class="days" id="days" aria-label="Day of week"></nav>
+    <div class="filter"><span class="lbl">How far</span><div class="chips" id="areas"></div></div>
+    <div class="filter"><span class="lbl">Fellowship</span><div class="chips" id="types"></div></div>
+    <div class="filter"><span class="lbl">Show</span><div class="chips" id="modes"></div></div>
+    <h2 id="dayTitle"></h2>
+    <div class="list" id="list"></div>
+    <div class="key" aria-label="What the letters mean">
+      <b>AA</b><span>Alcoholics Anonymous</span>
+      <b>NA</b><span>Narcotics Anonymous</span>
+      <b>CA</b><span>Cocaine Anonymous</span>
+      <b>CMA</b><span>Crystal Meth Anonymous</span>
+      <b>SA</b><span>Sexaholics Anonymous</span>
+      <b>Open</b><span>Anyone can attend</span>
+      <b>Closed</b><span>Only for people with a desire to stop</span>
+    </div>
+    <div class="src" id="sources"></div>
+  </section>
+
+  <section data-view="people" id="view-people" hidden>
+    <p class="motto">Reach out. It could save your life.</p>
+    <p class="notice" id="peopleNote"></p>
+    <div id="people"></div>
+    <h2>Add someone</h2>
+    <form class="addform" id="addForm">
+      <input id="addName" placeholder="Name" autocomplete="off">
+      <input id="addNum" placeholder="Number" inputmode="tel" autocomplete="off">
+      <button class="btn primary" type="submit">Add</button>
+    </form>
+    <p class="sub">People you add here are saved on this phone only.</p>
+  </section>
+
+  <section data-view="help" id="view-help" hidden>
+    <div id="help"></div>
+  </section>
+</div>
+
+<script>
+/* ===== Module registry. Each file in sources/ calls addSource({...}). ===== */
+const SOURCES=[]; let PEOPLE=[];
+function addSource(s){SOURCES.push(s)}
+function setPeople(list){PEOPLE=list.map(([name,num],i)=>({id:"p"+i,name,num,ok:false}))}
+</script>
+<!--@MODULES-->
+<script>
+/* ===== App ===== */
+const CFG=window.BUILD||{title:"Meetings",sub:"",personal:false};
+const DAYS=["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"];
+const AREAS=[["surrey","Surrey"],["near","+ Nearby"],["metro","+ Metro Van"],["bc","All BC"]];
+const AREA_RANK={surrey:0,near:1,metro:2,bc:3};
+const REGION_AREA={"Surrey":"surrey","South Surrey":"surrey","Cloverdale":"surrey",
+  "White Rock":"near","Delta":"near","Langley":"near","Fort Langley":"near","New Westminster":"near",
+  "Ladner":"metro","Tsawwassen":"metro","Aldergrove":"metro"};
+const TYPE_LABEL={W:"Women",M:"Men",C:"Closed",PUN:"Punjabi",LGBTQ:"LGBTQ+",B:"Big Book",ST:"Steps",SP:"Speaker"};
+const SMALL=new Set(["a","an","and","the","of","to","for","at","in","on","by","or","is","my","your"]);
+const tidy=s=>/[a-z]/.test(s)?s:s.toLowerCase().replace(/\b[\w']+/g,(w,i)=>i&&SMALL.has(w)?w:w[0].toUpperCase()+w.slice(1)).replace(/\bAa\b/g,"AA").replace(/\bEdi\b/g,"EDI").replace(/\b12th\b/i,"12th").replace(/\(S\.o\.s\.\)/,"(S.O.S.)");
+
+function parse(s){
+  const lines=s.rows.trim().split("\n").filter(Boolean);
+  const out=[];
+  for(const line of lines){
+    const f=line.split("|");
+    if(s.id==="edic"){
+      const [d,t,end,type,name,note]=f;
+      out.push({days:d,t,end,type,name,where:s.where,area:s.area,mode:"P",note,src:s.id});
+    }else if(s.format==="aa"){
+      const [d,t,name,venue,addr,region,mode,codes="",zoom=""]=f;
+      const c=codes.split(" ").filter(Boolean);
+      const tags=c.filter(x=>TYPE_LABEL[x]).map(x=>TYPE_LABEL[x]);
+      const where=venue==="Online only"?"Online · "+region:venue+", "+addr;
+      out.push({days:d,t,end:"",type:"AA",name:tidy(name),where,addr:venue==="Online only"?"":addr,area:REGION_AREA[region]||"metro",mode,tags,zoom,src:s.id});
+    }else{
+      const [d,t,end,name,city,addr,area,zoom,pass,note]=f;
+      out.push({days:d,t,end,type:s.fellowship,name,where:addr+", "+city,city,area,mode:zoom?"H":"P",zoom,pass,note,src:s.id});
+    }
+  }
+  return out.flatMap(m=>[...m.days].map(d=>({...m,d:+d,id:(m.src==="edic"?"":m.src+"-")+d+"-"+m.t+"-"+m.name+(m.src==="edic"?"":"-"+m.mode)})));
+}
+const ALL=SOURCES.flatMap(parse);
+const TYPES=["All",...new Set(ALL.map(m=>m.type))];
+const MODES=[["all","All"],["P","In person"],["O","Online"]];
+
+const store={get(k,f){try{const v=localStorage.getItem(k);return v==null?f:JSON.parse(v)}catch(e){return f}},
+  set(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}}};
+let favs=new Set(store.get("edic-favs",[]));
+let type="All";
+let area=store.get("edic-area","surrey");
+let mode="all";
+let tab="meetings", day=new Date().getDay();
+let edits=store.get("edic-people",{}), added=store.get("edic-people-added",[]), editing=null, confirmClear=false;
+
+const mins=t=>{const[h,m]=t.split(":").map(Number);return h*60+m};
+const fmt=t=>{let[h,m]=t.split(":").map(Number);const ap=h>=12?"PM":"AM";h=h%12||12;return h+":"+String(m).padStart(2,"0")+" "+ap};
+const endOf=m=>m.end?mins(m.end):mins(m.t)+60;
+const esc=s=>String(s??"").replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const maps=w=>"https://www.google.com/maps/search/?api=1&query="+encodeURIComponent(w);
+const zoomUrl=z=>"https://zoom.us/j/"+z.replace(/\D/g,"");
+const tel=n=>"tel:"+n.replace(/[^\d+]/g,"");
+const modeOk=m=>mode==="all"||(mode==="P"?m.mode!=="O":m.mode!=="P");
+const match=m=>(type==="All"||m.type===type)&&AREA_RANK[m.area]<=AREA_RANK[area]&&modeOk(m);
+const sortKey=(a,b)=>mins(a.t)-mins(b.t)||AREA_RANK[a.area]-AREA_RANK[b.area]||(a.src==="edic"?-1:0);
+
+function toast(msg){const t=document.createElement("div");t.className="toast";t.textContent=msg;document.body.appendChild(t);setTimeout(()=>t.remove(),1600)}
+function copy(text){try{navigator.clipboard.writeText(text).then(()=>toast("Copied "+text),()=>fallback(text))}catch(e){fallback(text)}}
+function fallback(text){const i=document.createElement("textarea");i.value=text;document.body.appendChild(i);i.select();try{document.execCommand("copy");toast("Copied "+text)}catch(e){toast("Press and hold to copy")}i.remove()}
+
+function links(m){
+  const a=[];
+  if(m.mode!=="O") a.push(`<a href="${maps(m.addr||m.where)}" target="_blank" rel="noopener">Directions</a>`);
+  if(m.zoom) a.push(`<a href="${zoomUrl(m.zoom)}" target="_blank" rel="noopener">Join on Zoom</a>`);
+  return a.join("");
+}
+function nextUp(){
+  const now=new Date(),d=now.getDay(),cur=now.getHours()*60+now.getMinutes();
+  for(let off=0;off<8;off++){
+    const dd=(d+off)%7, list=ALL.filter(m=>m.d===dd&&match(m)).sort(sortKey);
+    for(const m of list){
+      const s=mins(m.t);
+      if(off===0&&endOf(m)<=cur) continue;
+      if(off===0&&s<=cur) return {m,label:"On now",when:"Started "+fmt(m.t)};
+      const diff=off*1440+s-cur,h=Math.floor(diff/60),mm=diff%60;
+      const rel=diff<60?`in ${mm} min`:diff<1440?`in ${h} h ${mm} min`:"";
+      return {m,label:"Next meeting",when:`${off===0?"Today":off===1?"Tomorrow":DAYS[dd]} · ${fmt(m.t)}${rel?" · "+rel:""}`};
+    }
+  }
+  return null;
+}
+function renderMeetings(){
+  const n=nextUp();
+  document.getElementById("next").innerHTML=n
+    ?`<span class="eyebrow">${n.label}</span><span class="name">${esc(n.m.name)}</span><span class="when">${n.when} · ${n.m.type}</span><span class="when">${esc(n.m.where)}</span><span class="when">${links(n.m)}</span>`
+    :`<span class="eyebrow">Next meeting</span><span class="name">Nothing matches these filters</span>`;
+  const today=new Date().getDay();
+  document.getElementById("days").innerHTML=[1,2,3,4,5,6,0].map(i=>{const c=ALL.filter(m=>m.d===i&&match(m)).length;return `<button type="button" id="day-${i}" class="${i===today?"today":""}" aria-pressed="${i===day}" data-d="${i}" aria-label="${DAYS[i]}${i===today?", today":""}, ${c} meetings">${DAYS[i].slice(0,3)}<small>${c}</small></button>`}).join("");
+  document.getElementById("areas").innerHTML=AREAS.map(([k,l])=>`<button type="button" id="area-${k}" aria-pressed="${k===area}" data-a="${k}">${l}</button>`).join("");
+  document.getElementById("types").innerHTML=TYPES.map(t=>`<button type="button" id="type-${t.replace(/\W/g,"")}" aria-pressed="${t===type}" data-t="${t}">${t}</button>`).join("");
+  document.getElementById("modes").innerHTML=MODES.map(([k,l])=>`<button type="button" id="mode-${k}" aria-pressed="${k===mode}" data-m="${k}">${l}</button>`).join("");
+  const list=ALL.filter(m=>m.d===day&&match(m)).sort((a,b)=>(favs.has(b.id)-favs.has(a.id))||sortKey(a,b));
+  document.getElementById("dayTitle").textContent=(day===today?"Today, ":"")+DAYS[day]+" · "+list.length+" meeting"+(list.length===1?"":"s");
+  const cur=new Date().getHours()*60+new Date().getMinutes();
+  document.getElementById("list").innerHTML=list.length?list.map(m=>{
+    const isT=day===today,cls=isT&&endOf(m)<=cur?"past":isT&&mins(m.t)<=cur?"now":"",f=favs.has(m.id);
+    const chips=[m.mode==="O"?"Online":m.mode==="H"?"In person + online":"",...(m.tags||[])].filter(Boolean).map(x=>`<span>${x}</span>`).join("");
+    return `<div class="row ${cls}">
+      <span class="time">${fmt(m.t)}${m.end?`<small>to ${fmt(m.end)}</small>`:""}</span>
+      <div class="info"><span class="n">${esc(m.name)}</span>
+        <span class="where">${esc(m.where)}</span>
+        <span class="meta"><span class="tag">${esc(m.type)}</span>${cls==="now"?"<span>on now</span>":""}${chips}${m.note?`<span class="flag">${esc(m.note)}</span>`:""}${links(m)}</span>
+        ${m.zoom?`<span class="zoom">Zoom ${esc(m.zoom)}${m.pass?" · passcode "+esc(m.pass):""}</span>`:""}
+      </div>
+      <button type="button" class="star" aria-pressed="${f}" aria-label="${f?"Unstar":"Star"} ${esc(m.name)}" data-fav="${esc(m.id)}">${f?"★":"☆"}</button>
+    </div>`}).join(""):`<div class="empty"><p style="margin:0 0 10px">No ${type==="All"?"":esc(type)+" "}${mode==="O"?"online ":mode==="P"?"in-person ":""}meetings on ${DAYS[day]} ${area==="bc"?"anywhere on the list":"within "+AREAS.find(a=>a[0]===area)[1].replace("+ ","")}.</p><div class="acts">${type!=="All"||mode!=="all"?`<button type="button" class="btn primary" data-reset="filters">Show everything</button>`:""}${area!=="bc"?`<button type="button" class="btn" data-reset="wide">Show all of BC</button>`:""}</div></div>`;
+  document.getElementById("sources").innerHTML="<b>Where this comes from</b>"+SOURCES.map(s=>
+    `<span>${esc(s.name)} · updated ${esc(s.updated)} · <a href="${s.link}" target="_blank" rel="noopener">${s.link.replace(/https:\/\/(www\.)?/,"").replace(/\/$/,"")}</a>${s.note?"<br>"+esc(s.note):""}</span>`).join("")
+    +`<span>Pulled together ${esc(CFG.built||"")}. Times change, so call ahead if it matters.</span>`;
+}
+function people(){return [...PEOPLE.map(p=>({...p,...(edits[p.id]||{})})).filter(p=>!p.gone),...added]}
+function renderPeople(){
+  document.getElementById("peopleNote").innerHTML=PEOPLE.length
+    ?"Copied off the handwritten list. Anything marked <b>check</b> might have a digit wrong. Hold it against the paper, fix it with Edit, then tap the check so it turns green."
+    :"Newcomers usually get a list of numbers at their first meeting. Put them here: a sponsor, your home group, anyone you'd call on a rough day. Tap Edit on anyone to fix or remove them.";
+  const list=people();
+  document.getElementById("people").innerHTML=list.length?list.map(p=>{
+    if(editing===p.id) return `<div class="person"><div class="edit">
+      <input id="ed-name" value="${esc(p.name)}" aria-label="Name"><input id="ed-num" value="${esc(p.num)}" inputmode="tel" aria-label="Number">
+      <button class="btn primary" type="button" data-save="${p.id}">Save</button><button class="btn" type="button" data-cancel="1">Cancel</button>
+      <button class="btn" type="button" data-del="${p.id}">Remove</button></div></div>`;
+    return `<div class="person">
+      <div><div class="nm">${esc(p.name)}${p.id.startsWith("p")?`<button type="button" class="chk ${p.ok?"ok":"no"}" data-ok="${p.id}" aria-label="${p.ok?"Checked":"Mark as checked"}" style="border:0;cursor:pointer">${p.ok?"✓ checked":"check"}</button>`:""}</div>
+        <div class="num">${esc(p.num)}</div></div>
+      <div class="acts"><a class="btn primary" href="${tel(p.num)}">Call</a><button class="btn" type="button" data-copy="${esc(p.num)}">Copy</button><button class="btn" type="button" data-edit="${p.id}">Edit</button></div>
+    </div>`}).join("")+(confirmClear
+      ?`<div class="confirm"><span>Remove all ${list.length} people from this phone?</span><div class="acts"><button class="btn danger" type="button" data-clear="yes">Yes, clear the list</button><button class="btn" type="button" data-clear="no">Keep them</button></div></div>`
+      :`<div class="acts" style="padding-top:10px"><button class="btn" type="button" data-clear="ask">Clear list</button></div>`)
+    :`<p class="empty">No numbers yet. At your first meeting people will usually hand you a phone list. Add them below so they're one tap away.</p>`;
+}
+function savePerson(id,patch){
+  if(id.startsWith("a")){added=added.map(p=>p.id===id?{...p,...patch}:p);store.set("edic-people-added",added)}
+  else{edits[id]={...(edits[id]||{}),...patch};store.set("edic-people",edits)}
+}
+const HELP=[
+ {name:"Emergency",what:"Police, fire, ambulance",num:"911"},
+ {name:"Suicide Crisis Helpline",what:"Call or text, 24/7, anywhere in Canada",num:"988"},
+ {name:"BC Mental Health Support",what:"24/7, no area code",num:"310-6789"},
+ {name:"Alcohol & Drug Referral Service",what:"Finds detox and treatment in BC, 24/7",num:"1-800-663-1441"},
+ {name:"AA 24-hour line",what:"Greater Vancouver Intergroup",num:"604-434-3933"},
+ {name:"NA BC Helpline",what:"Narcotics Anonymous BC Region",num:"1-855-444-2262"},
+ {name:"CA BC Help Line",what:"Cocaine Anonymous BC",num:"604-662-8500"},
+ {name:"Easy Does It Club",what:"7277 King George Blvd, Surrey",num:"778-564-7277"},
+];
+function renderHelp(){
+  document.getElementById("help").innerHTML=HELP.map(h=>`<div class="line">
+    <div><div style="font-weight:700">${h.name}</div><div class="what">${h.what}</div><div class="num">${h.num}</div></div>
+    <div class="acts"><a class="btn primary" href="${tel(h.num)}">Call</a><button class="btn" type="button" data-copy="${h.num}">Copy</button></div></div>`).join("");
+}
+function render(){
+  document.querySelectorAll("[data-tab]").forEach(b=>b.setAttribute("aria-pressed",b.dataset.tab===tab));
+  document.querySelectorAll("[data-view]").forEach(s=>s.hidden=s.dataset.view!==tab);
+  if(tab==="meetings") renderMeetings(); else if(tab==="people") renderPeople(); else renderHelp();
+}
+document.getElementById("appTitle").textContent=CFG.title;
+document.getElementById("appSub").textContent=CFG.sub;
+document.addEventListener("click",e=>{
+  const b=e.target.closest("button"); if(!b) return; const ds=b.dataset;
+  if(ds.tab){tab=ds.tab;editing=null}
+  else if(ds.d) day=+ds.d;
+  else if(ds.a){area=ds.a;store.set("edic-area",area)}
+  else if(ds.t){type=ds.t}
+  else if(ds.m){mode=ds.m}
+  else if(ds.reset){type="All";mode="all";if(ds.reset==="wide"){area="bc";store.set("edic-area",area)}}
+  else if(ds.fav){favs.has(ds.fav)?favs.delete(ds.fav):favs.add(ds.fav);store.set("edic-favs",[...favs])}
+  else if(ds.copy){copy(ds.copy);return}
+  else if(ds.ok){const p=people().find(x=>x.id===ds.ok);savePerson(ds.ok,{ok:!p.ok})}
+  else if(ds.edit) editing=ds.edit;
+  else if(ds.cancel) editing=null;
+  else if(ds.save){savePerson(ds.save,{name:document.getElementById("ed-name").value.trim(),num:document.getElementById("ed-num").value.trim(),ok:true});editing=null}
+  else if(ds.del){const nm=(people().find(x=>x.id===ds.del)||{}).name;if(ds.del.startsWith("a")){added=added.filter(p=>p.id!==ds.del);store.set("edic-people-added",added)}else savePerson(ds.del,{gone:true});editing=null;toast("Removed "+nm)}
+  else if(ds.clear==="ask") confirmClear=true;
+  else if(ds.clear==="no") confirmClear=false;
+  else if(ds.clear==="yes"){PEOPLE.forEach(p=>{edits[p.id]={...(edits[p.id]||{}),gone:true}});store.set("edic-people",edits);added=[];store.set("edic-people-added",added);confirmClear=false;editing=null;toast("List cleared")}
+  else return;
+  render();
+});
+document.getElementById("addForm").addEventListener("submit",e=>{
+  e.preventDefault();
+  const name=document.getElementById("addName").value.trim(),num=document.getElementById("addNum").value.trim();
+  if(!name||!num){toast("Add a name and a number");return}
+  added.push({id:"a"+Date.now(),name,num,ok:true});store.set("edic-people-added",added);
+  e.target.reset();render();toast("Added "+name);
+});
+render();
+setInterval(()=>{if(tab==="meetings")renderMeetings()},60000);
+</script>
