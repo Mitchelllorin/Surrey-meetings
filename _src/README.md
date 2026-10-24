@@ -1,6 +1,6 @@
-# Build source (not served)
+# Build source
 
-Jekyll skips folders that start with `_`, so nothing here shows up on the website.
+Build files for the site. Nothing private is in here.
 
 - `sources/` one file per meeting list. Add a new flyer or fellowship by adding a file that calls `addSource({...})`.
 - `app.part.html`, `style.part.html` the app itself.
