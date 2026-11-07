@@ -38,8 +38,8 @@ def standalone(body):
             + body.replace("</style>\n", "</style>\n</head><body>\n", 1) + "\n</body></html>\n")
 
 (ROOT / "dist").mkdir(exist_ok=True)
-mine = page("EDIC Meetings", "Easy Does It Club · 7277 King George Blvd, Surrey · plus meetings across Surrey", True)
-share = page("Surrey Meetings", "AA, NA, CA, CMA and SA meetings around Surrey, BC", False)
+mine = page("EDIC Meetings", "Easy Does It Club · 7277 King George Blvd, Surrey · plus meetings across the Lower Mainland", True)
+share = page("Surrey Meetings", "AA, NA, CA, CMA and SA meetings in Surrey and across the Lower Mainland", False)
 (ROOT / "dist" / "edic-meetings.html").write_text(mine)                      # published as the private artifact
 (ROOT / "dist" / "surrey-meetings.html").write_text(standalone(share))      # the file to give away
 (ROOT / "dist" / "surrey-meetings.artifact.html").write_text(share)         # same, as a shareable artifact
@@ -48,7 +48,7 @@ site_head = ('<link rel="manifest" href="manifest.webmanifest">\n'
              '<meta name="theme-color" content="#0f6e6a">\n'
              '<link rel="icon" href="icon-192.png">\n'
              '<link rel="apple-touch-icon" href="icon-192.png">\n'
-             '<meta name="description" content="AA, NA, CA, CMA and SA meetings around Surrey, BC">\n')
+             '<meta name="description" content="AA, NA, CA, CMA and SA meetings in Surrey and across the Lower Mainland">\n')
 site_sw = ('<script>if("serviceWorker" in navigator){addEventListener("load",()=>'
            'navigator.serviceWorker.register("sw.js").catch(()=>{}))}</script>\n')
 site = standalone(share).replace("<title>", site_head + "<title>", 1).replace("</body>", site_sw + "</body>", 1)

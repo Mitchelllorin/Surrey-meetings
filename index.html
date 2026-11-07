@@ -6,7 +6,7 @@
 <meta name="theme-color" content="#0f6e6a">
 <link rel="icon" href="icon-192.png">
 <link rel="apple-touch-icon" href="icon-192.png">
-<meta name="description" content="AA, NA, CA, CMA and SA meetings around Surrey, BC">
+<meta name="description" content="AA, NA, CA, CMA and SA meetings in Surrey and across the Lower Mainland">
 <title>Surrey Meetings</title>
 <meta name="claude:viewport-fit-sides" content="cover">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&family=Atkinson+Hyperlegible:wght@400;700&display=swap">
@@ -146,6 +146,12 @@ section[data-view]{display:flex;flex-direction:column;gap:14px}
       <button class="btn primary" type="submit">Add</button>
     </form>
     <p class="sub">People you add here are saved on this phone only.</p>
+    <h2>Paste a saved list</h2>
+    <form class="addform" id="importForm">
+      <input id="importCode" placeholder="Paste list code" autocomplete="off">
+      <button class="btn primary" type="submit">Add list</button>
+    </form>
+
   </section>
 
   <section data-view="help" id="view-help" hidden>
@@ -159,7 +165,7 @@ const SOURCES=[]; let PEOPLE=[];
 function addSource(s){SOURCES.push(s)}
 function setPeople(list){PEOPLE=list.map(([name,num],i)=>({id:"p"+i,name,num,ok:false}))}
 </script>
-<script>window.BUILD={"title": "Surrey Meetings", "sub": "AA, NA, CA, CMA and SA meetings around Surrey, BC", "personal": false, "built": "23 Oct 2026"};</script>
+<script>window.BUILD={"title": "Surrey Meetings", "sub": "AA, NA, CA, CMA and SA meetings in Surrey and across the Lower Mainland", "personal": false, "built": "7 Nov 2026"};</script>
 <script>
 // Easy Does It Club (EDIC), Surrey. From the paper list (Oct 2026), checked against easydoesitclub.org/meetings on 23 Oct 2026.
 // Row: days | start | end | fellowship | name | note
@@ -197,205 +203,715 @@ addSource({
 
 </script>
 <script>
-// Cocaine Anonymous BC. From the 2025 paper list, with Lower Mainland rows corrected from ca-bc.org/Meetings on 23 Oct 2026.
+// Cocaine Anonymous BC. From ca-bc.org/Meetings on 7 Nov 2026 (whole province).
 // Crack Attack and Surrey Serenity live in the EDIC source.
 // Row: days | start | end | name | city | address | area | zoom | passcode | note
 addSource({
-  id:"cabc", name:"Cocaine Anonymous BC", updated:"Oct 2026 (Lower Mainland) · 2025 (rest of BC)", link:"https://ca-bc.org/Meetings/",
+  id:"cabc", name:"Cocaine Anonymous BC", updated:"7 Nov 2026", link:"https://ca-bc.org/Meetings/",
   phone:"604-662-8500", fellowship:"CA",
-  note:"Meetings outside the Lower Mainland come from the 2025 paper list. Check ca-bc.org before a long drive.",
+  note:"Rooms move now and then. The CA BC line can confirm.",
   rows:`
-1|19:00|20:30|Light Side of the Spoon|Chilliwack|46129 Princess Ave (2nd floor, Ruth & Naomi Family Centre)|metro|||
-1|19:00|20:00|Wide Awake|Nanaimo|596 Albert Street|bc|||
-1|19:00|20:00|Off the Rails|Langford|766 Meaford Ave|bc|||
+1|18:00|19:00|Going Off the Rails|Kelowna|1169 Sutherland Ave|bc|||
+1|19:00|20:30|Light Side of the Spoon|Chilliwack|46129 Princess Ave (2nd floor, Ruth & Naomi's Family Centre)|metro|||
+1|19:00|20:00|Wide Awake|Nanaimo|596 Albert St|bc|||
 1|19:00|20:15|This is the Way|Kitimat|LNG Cedar Valley Lodge Camp|bc|||
-1|19:00|20:30|A New Purpose (Candlelight)|Cranbrook|Alliance Church, 1200 Kootenay St N|bc|||
-1|19:30|20:30|Breakaway|New Westminster|Anvil Centre, Room 413, 777 Columbia Street|near|||Closed stat holidays
-2|18:00|19:00|Cocaine Cowboys|Vancouver|Vancouver Alano Club, 1525 W 7th Ave|metro|||
-2|19:00|20:00|Carpet Crawlers|Abbotsford|2631 Cyril Street|metro|||
-2|19:00|20:15|The Last Straw|Duncan|Alano Club, 450 Whistler Street|bc|957 027 3473|alanoclub|
-2|19:00|20:00|Hope, Faith & Courage|Salmon Arm|The Oaks Wellness Centre|bc|||Address cut off on flyer
+1|19:00|20:00|Off the Rails|Victoria|612 David St|bc|||Closed stat holidays
+1|19:30|20:30|Breakaway|New Westminster|Anvil Centre, Room 413, 777 Columbia St|near|||Closed stat holidays
+2|18:00|19:00|Cast Aways|Vancouver|Alano Club of Vancouver, 1525 W 7th Ave|metro|||
+2|19:00|20:15|The Last Straw|Duncan|Alano Club, 450 Whistler St|bc|957 027 3473|alanoclub|
+2|19:00|20:30|Off the Brick|Quesnel|2 Rivers Church, 214 Anderson Dr|bc|||
+2|19:00|20:00|Make Strong House|Skidegate|274 3rd Ave (in the garage)|bc|||
 2|19:00|20:00|Free to Be (Topic/Discussion)|Kimberley|Kimberley United Church, 10 Boundary St|bc|||
-2|19:00|20:00|New Experience|Vernon|Knox Church "Alano Club", 3204 Alexis Drive|bc|||
+2|19:00|20:00|Carpet Crawlers|Abbotsford|2631 Cyril St|metro|||
+2|19:00|20:00|New Experience|Vernon|Knox Church "Alano Club", 3204 Alexis Park Dr|bc|||
 2|19:00|20:00|Pipe Down|Langley|Langley Alano Club, 20473 Douglas Cres|near|847 2696 9083|A4BkRB|
-2|19:30|20:30|Prince Rupert CA|Prince Rupert|St. Paul's Lutheran Church, 460 McBride Street|bc|||
+2|19:30|20:30|Prince Rupert CA|Prince Rupert|St. Paul's Lutheran Church, 460 McBride St|bc|||
 2|19:30|20:45|Caulfield on the Rocks|West Vancouver|St. Francis in the Woods Church, 4773 South Piccadilly Rd|metro|||
-3|19:00|20:00|Recovering Rockstars|Kelowna|K-Alano Club, 2108 Vasile Road|bc|||
+3|19:00|20:30|Misfits|Aldergrove|St. Dunstan's Anglican Church, 3025 264 St|near|||
+3|19:00|20:00|Dark Side of the Spoon|Victoria|#209 - 774 Goldstream Ave|bc|||
 3|20:00|21:00|Cracked Egos|Dawson Creek|Health Unit, 1001 110 Ave|bc|||
-4|18:30|19:30|Sober Soldiers|Vancouver|Vancouver Recovery Club, 2775 Sophia Street|metro|||
-4|18:00|19:00|The Last Straw (Step & Tradition)|Kelowna|K-Alano Club, 2108 Vasile Road|bc|||
+4|18:00|19:00|The Last Straw (Step & Tradition)|Kelowna|K-Alano Club, 2108 Vasile Rd|bc|||
+4|18:30|19:30|Sober Soldiers|Vancouver|Vancouver Recovery Club, 2775 Sophia St|metro|||
 4|19:00|20:00|Hope Fiends|Campbell River|Alano Club, 301 10th Ave|bc|881 5131 2112|hopefiends|
 4|19:00|20:30|PocoNuts|Port Coquitlam|Trinity United Church (Gym Room), 2211 Prairie Ave|near|||
+4|19:30|20:30|Light the Hope, Not the Dope|Chilliwack|Chilliwack Alano Club, 46035 Victoria Ave|metro|||
 5|18:30|19:30|Hope Dealers|Courtenay|Elim Chapel, 566 5th St|bc|890 9739 5043|247762|
-5|19:00|20:00|Here and Now|Cranbrook|The Dwelling Place, 2324 2nd Street South|bc|||
+5|18:30|19:30|Made a Decision|Prince George|1308 Alward St (Youth Detox entrance, buzzer)|bc|||
+5|19:00|20:00|Here and Now|Cranbrook|The Dwelling Place, 2324 2nd St S|bc|||
 5|19:00|20:15|This is the Way|Kitimat|LNG Cedar Valley Lodge Camp|bc|||
-5|19:30|20:30|Spiritual Lines|Victoria|St. Patrick's Church, 2060 Haultain Street|bc|||
-5|19:30|20:30|Friday Night Live|North Vancouver|NS Alano Club, 126 2nd St E|metro|||
+5|19:30|20:30|Spiritual Lines|Victoria|St. Patrick's Church, 2060 Haultain St|bc|||
+5|19:30|20:30|Friday Night Live|North Vancouver|Versatile Building, 113 E 3rd St (alley entrance between Subway and Army & Navy)|metro|||Temporary location
 6|18:00|19:00|Uptown Saturday Night (12x12)|Burnaby|Burnaby Fellowship, 7638 6th St|near|||
-6|18:00|19:00|The Last Floor|Abbotsford|Alano Club, 2584 Cyril Street|metro|||
-6|19:00|20:00|Pender Harbour Misfits|Madeira Park|Pender Harbour Community Church, 12891 Lagoon Rd|bc|||
+6|18:00|19:00|The Last Floor|Abbotsford|Alano Club, 2584 Cyril St|metro|||
 6|19:00|20:00|Drop the Rock|Duncan|Cowichan Valley Alano Club, 450 Whistler St|bc|957 027 3473|alanoclub|
 6|20:00|21:30|White Rock Bottom (Big Book)|White Rock|15302 Pacific Ave|near|||
-6|20:00|21:00|Fort St. John CA|Fort St. John|10233 100th Ave|bc|||Name hard to read on flyer
-0|11:00|12:00|Higher Powder|Langford|Alano Club, 766 Meaford Ave|bc|||
-0|19:00|20:00|New Experience|Vernon|Knox Church "Alano Club", 3204 Alexis Drive|bc|||
-0|19:00|20:00|Spiritual Lines Then & Now|Port Alberni|Port Alberni Alano Club, 3028 2nd Ave|bc|||
-0|19:30|20:30|Just Don't Use Today|Squamish|37897 3rd Ave|metro|||
+6|20:00|21:00|Ayo for Yayo|Fort St. John|10233 100th Ave|bc|||
+0|19:00|20:00|New Experience|Vernon|Knox Church "Alano Club", 3204 Alexis Park Dr|bc|||
+0|19:30|20:30|Just Don't Use Today|Squamish|37978 3rd Ave|metro|||
 0|20:00|21:00|Cracked Egos|Dawson Creek|Health Unit, 1001 110 Ave|bc|||
 `});
 
 </script>
 <script>
-// AA Greater Vancouver Intergroup (vancouveraa.ca), feed last updated 21 Oct 2026. Pulled 23 Oct 2026.
-// Surrey, White Rock, Delta, Ladner, Tsawwassen, New Westminster. EDIC meetings are in the EDIC source.
-// Row: days | start | name | venue | address | region | P/H/O (in person, hybrid, online) | type codes | zoom
+// AA Greater Vancouver Intergroup (vancouveraa.ca) feed, pulled 7 Nov 2026. Whole intergroup:
+// Vancouver, North Shore, Burnaby, New West, Tri-Cities, Maple Ridge, Richmond, Delta, Surrey, White Rock.
+// EDIC meetings live in the EDIC source; service and committee meetings left out.
+// Row: days | start | name | venue | address | region | P/H/O | type codes | zoom
 addSource({
-  id:"aa-gvis", name:"AA Greater Vancouver", updated:"21 Oct 2026", link:"https://vancouveraa.ca/meetings/",
+  id:"aa-gvis", name:"AA Greater Vancouver", updated:"7 Nov 2026", link:"https://vancouveraa.ca/meetings/",
   phone:"604-434-3933", fellowship:"AA", format:"aa",
   note:"Times and rooms change. The AA 24-hour line can confirm any meeting.",
   rows:`
-2|20:00|HAVING A GOOD DAY|St. Barnabas Anglican Church|1010 5th Ave, New Westminster|New Westminster|P|D O
-0|18:15|FRASER VALLEY YOUNG PEOPLES BEGINNERS MEETING|St. Aidan's Church|1320 7th Ave, New Westminster|New Westminster|P|O
-123456|07:00|EARLY RISERS|Church of the Holy Trinity|15115 Roper Ave, White Rock|White Rock|P|C D
-1|12:30|SOUL FOOD|Union Gospel Mission New Westminster|658 Clarkson St, New Westminster|New Westminster|P|O SP
-0|20:00|FRASER VALLEY YOUNG PEOPLE|St. Aidan's Church|1320 7th Ave, New Westminster|New Westminster|P|O X
-0|19:30|UNITY, SERVICE AND RECOVERY|Sunshine Ridge Baptist Church|6230 120 St, Surrey|Surrey|P|O X
-0|19:30|WHITE ROCK SUNDAY NIGHT BIG BOOK|Masonic Hall|15302 Pacific Ave, White Rock|White Rock|P|B C X
-0|19:30|PHOENIX MEN'S|Crossroad's United Church|7655 120 St, Delta|Delta|P|C M X
-0|19:00|THE 12 STEPS|The Salvation Army White Rock|15417 Roper Ave, White Rock|White Rock|P|O ST
-0|19:00|TSAWWASSEN SUNDAY NIGHT|Little House|5061 12 Ave, Delta|Tsawwassen|P|O X
-0|18:30|PHOENIX MEN'S STEP|Crossroad's United Church|7655 120 St, Delta|Delta|P|C M ST X
-01234|18:00|RIVER GROUP|Sacred Heart Monastery|3900 Arthur Dr, Delta|Ladner|P|O
-023456|17:30|HOW IT WORKS|Ladner Adult Learning Centre|4748 57 St b, Delta|Ladner|P|D O X
-01456|12:00|RIVER GROUP|Sacred Heart Monastery|3900 Arthur Dr, Delta|Ladner|P|O
-0123456|12:00|DAILY REFLECTIONS|Masonic Hall|15302 Pacific Ave, White Rock|White Rock|P|O X
-0|11:00|PARK MEETING|Queen's Avenue United Church|529 Queens Ave, New Westminster|New Westminster|P|D O
-013456|10:30|AA WOMEN'S MEETING|Avalon Women's Centre White Rock|1548 Johnston Rd, White Rock|White Rock|H|D O X W ONL
-0|10:00|WHITE ROCK MORNING DISCUSSION|Masonic Hall|15302 Pacific Ave, White Rock|White Rock|P|D O X
-012456|09:45|EARLY MORNING COFFEE AND DONUTS|Online only|Surrey|Surrey|O|D O ONL
-06|09:30|SUNRISE SERENITY|Waves Coffee House|715 Columbia St, New Westminster|New Westminster|P|B O X
-06|09:30|HOW IT WORKS|Ladner Adult Learning Centre|4748 57 St b, Delta|Ladner|P|D O X
-0456|08:00|A VISION FOR YOU|Little House|5061 12 Ave, Delta|Tsawwassen|H|O X ONL
-0123456|07:00|CAN-US GROUP|Online only|White Rock|White Rock|O|O ONL
-6|20:00|SATURDAY NIGHT PUNJABI GRP|St. Cuthbert's Church|11601 82 Ave, Delta|Delta|P|O X PUN
-6|20:00|WHITE ROCK SATURDAY NIGHT|Online only|White Rock|White Rock|O|D O ONL
-6|19:30|SATURDAY NIGHT'S ALRIGHT ALRIGHT|Saint Barnabas Anglican Church|1010 5th Ave, New Westminster|New Westminster|P|D O X
-6|18:30|SATURDAY NIGHT SOBRIETY|Church of the Epiphany|10553 148 St, Surrey|Surrey|P|D O X
-56|18:00|RIVER GROUP|Sacred Heart Monastery|3900 Arthur Dr, Delta|Ladner|P|D O
-1356|17:00|WHITE ROCK FIVER|Masonic Hall|15302 Pacific Ave, White Rock|White Rock|P|D O X
-6|12:00|SOBER LIVING|St. Cuthbert's Church|11601 82 Ave, Delta|Delta|P|O X
-6|09:00|RIVER GROUP|Sacred Heart Monastery|3900 Arthur Dr, Delta|Ladner|P|O
-6|07:00|SINGLENESS OF PURPOSE|Masonic Hall|15302 Pacific Ave, White Rock|White Rock|P|C X
-5|20:00|SAPPERTON|Saint Barnabas Anglican Church|1010 5th Ave, New Westminster|New Westminster|P|O X
-5|20:00|HOW IT WORKS|Ladner Adult Learning Centre|4748 57 St b, Delta|Ladner|P|D O X
-5|19:00|READ THE BOOK|St. Cuthbert's Church|11601 82 Ave, Delta|Delta|P|B O X
-15|19:00|FIRESIDE WHITE ROCK|Masonic Hall|15302 Pacific Ave, White Rock|White Rock|P|O X
-5|19:00|GOOD VIBRATIONS|Church of the Holy Trinity|15115 Roper Ave, White Rock|White Rock|P|O X
-12345|08:00|SUNRISE SERENITY|Waves Coffee House|715 Columbia St, New Westminster|New Westminster|H|B O X ONL
-12345|08:00|RIVER GROUP|Sacred Heart Monastery|3900 Arthur Dr, Delta|Ladner|P|D O
-5|08:00|HOW IT WORKS|Ladner Adult Learning Centre|4748 57 St b, Delta|Ladner|P|B D O X
-145|07:00|SINGLENESS OF PURPOSE|Masonic Hall|15302 Pacific Ave, White Rock|White Rock|H|C D X ONL
-4|20:00|FRASER GLEN GROUP|St. Helen's Church|10787 128 St, Surrey|Surrey|P|D O X
-4|20:00|A PLACE OF VISION|Mt. Olive Lutheran Church|2350 148 St, Surrey|White Rock|P|O SP X
-4|20:00|TRADITION 3|Grace Community Church|14618 110 Ave, Surrey|Surrey|P|O
-4|19:30|NEW WEST BIG BOOK STUDY|Saint Barnabas Anglican Church|1010 5th Ave, New Westminster|New Westminster|H|B O X ONL
-4|19:00|NORTHSIDE STEPS AND GUESTS|North Delta Evangelical|11300 84 Ave, Delta|Delta|P|D O ST X
-4|12:00|IT'S A GOOD DAY TO BE SOBER|Northwood Church|8855 156 St, Surrey|Surrey|P|D O X
-1234|08:00|HOW IT WORKS|Ladner Adult Learning Centre|4748 57 St b, Delta|Ladner|P|D O X
-3|20:00|CRESCENT HEIGHTS DISCUSSION|Peninsula United Church|15639 24 Ave, Surrey|White Rock|P|D O X
-3|20:00|TSAWWASSEN 12th AVE. MEN'S|Little House|5061 12 Ave, Delta|Tsawwassen|P|C M X
-3|20:00|INDO CANADIAN|Bear Creek Pavillion|13750 88 Ave, Surrey|Surrey|P|O PUN X
-3|19:30|CENTRE GROUP|St. Aidan's Church|1320 7th Ave, New Westminster|New Westminster|P|D O SP X
-3|19:00|TALKING TREES BIG BOOK MEETING|Star of the Sea Hall|15262 Pacific Ave, White Rock|White Rock|P|B C X
-3|19:00|BIG BOOK QUESTIONS & ANSWERS|St. Cuthbert's Church|11601 82 Ave, Delta|Delta|P|B O X
-3|19:00|FLEETWOOD AACTION GROUP|Fleetwood Christian Reformed Church|9165 160 St, Surrey|Surrey|H|B C ST X ONL
-3|18:30|OPEN DOOR DISCUSSION|Strawberry Hill Branch of Surrey Libraries|7399 122 St, Surrey|Surrey|P|D O ST X
-3|17:00|EXPERIENCE, STRENGTH & HOPE|Church of the Holy Trinity|15115 Roper Ave, White Rock|White Rock|P|C D X
-3|12:00|RIVER GROUP|Sacred Heart Monastery|3900 Arthur Dr, Delta|Ladner|P|D O
-3|09:45|EARLY MORNING COFFEE AND DONUTS|Online only|Surrey|Surrey|O|O ONL
-23|07:00|SINGLENESS OF PURPOSE|Masonic Hall|15302 Pacific Ave, White Rock|White Rock|H|C X ONL
-2|20:00|MEAT AND POTATOES|Star of the Sea Hall|15262 Pacific Ave, White Rock|White Rock|P|B O X
-2|20:00|BEAR CREEK NO SMOKE|Bear Creek Pavillion|13750 88 Ave, Surrey|Surrey|P|O X
-2|19:30|NORTH DELTA|Crossroad's United Church|7655 120 St, Delta|Delta|P|O X
-2|19:00|CENTENNIAL|St. Johns' Presbyterian|1480 George St, White Rock|White Rock|P|O X
-2|19:00|RUBY TUESDAY|Ladner United Church|4960 48 Ave, Delta|Ladner|H|O X W ONL
-2|18:30|AA BIG BOOK MEETING|Avalon Women's Centre White Rock|1548 Johnston Rd, White Rock|White Rock|H|B D O X W ONL
-2|18:00|TSAWWASSEN TUESDAY NIGHT 12 STEP|Benediction Lutheran Church|5575 6 Ave, Delta|Tsawwassen|P|C ST X
-2|12:00|RIVER GROUP|Sacred Heart Monastery|3900 Arthur Dr, Delta|Ladner|P|C D
-1|20:00|WEST END GROUP, JOE & CHARLIE TAPES|Saint Barnabas Anglican Church|1010 5th Ave, New Westminster|New Westminster|P|D O ST X
-1|19:30|MONDAY NITE MEN'S|St. Johns' Presbyterian|1480 George St, White Rock|White Rock|P|C D M X
-1|19:00|FRANTIC SERENITY|Church of the Holy Trinity|15115 Roper Ave, White Rock|White Rock|P|B O X
-1|19:00|BRIDGE TO HOPE|SUMS Place|10776 King George Blvd, Surrey|Surrey|P|D O X
-1|19:00|SAINTS WE AIN'T|New Hope Christian Church|11838 88 Ave, Delta|Delta|P|O X
-1|19:00|SULLIVAN HEIGHTS BIG BOOK|Berea Church|6062 132 St, Surrey|Surrey|P|B C X
-1|17:30|HOW IT WORKS|Ladner Adult Learning Centre|4748 57 St b, Delta|Ladner|P|O SP X
+0123456|07:00|CAN-US GROUP|Online only|White Rock|White Rock|O||73360742943
+0123456|07:00|WEST END 7 AM|Online only|Vancouver|Vancouver|O||337590538
+0123456|12:00|DAILY REFLECTIONS|Masonic Hall|15302 Pacific Ave, White Rock|White Rock|P||
+0123456|12:00|DAILY REPRIEVE|Online only|Burnaby|Burnaby|O||198058170
+0123456|12:15|AA WOMEN'S MEETING|Avalon Women's Centre North Shore|2225 Marine Dr, West Vancouver|West Vancouver|H|W|97348773262
+0123456|12:30|AA WOMEN'S MEETING|Avalon Women's Centre|5957 West Blvd, Vancouver|Vancouver|H|W|97288841083
+0123456|19:00|NUEVA ESPERANZA|St. Paul's Roman Catholic Church|381 E Cordova St, Vancouver|Vancouver|P|S|
+0123456|23:00|RECOVERY CLUB|Vancouver Recovery Club|2775 Sophia St, Vancouver|Vancouver|P||
+012345|12:00|ATTITUDE ADJUSTMENT HOUR|Park House|5400 River Rd, Richmond|Richmond|P||
+012345|12:30|OUT TO LUNCH BUNCH|The Dugout|57 E Hastings St, Vancouver|Vancouver|P||
+01234|18:00|RIVER GROUP|Sacred Heart Monastery|3900 Arthur Dr, Delta|Ladner|P||
+01246|09:45|EARLY MORNING COFFEE AND DONUTS|Online only|Surrey|Surrey|O||383660385
+013456|10:30|AA WOMEN'S MEETING|Avalon Women's Centre White Rock|1548 Johnston Rd, White Rock|White Rock|H|W|98668239663
+013|22:00|YOU ARE NOT ALONE: Remote Connections|Online only|Vancouver|Vancouver|O||4787414665
+01456|12:00|RIVER GROUP|Sacred Heart Monastery|3900 Arthur Dr, Delta|Ladner|P||
+023456|17:30|HOW IT WORKS|Ladner Adult Learning Centre|4748 57 St b, Delta|Ladner|P||
+0245|08:00|MEDITATE AT 8|Online only|Vancouver|Vancouver|O||4353030651
+0456|08:00|A VISION FOR YOU|Little House|5061 12 Ave, Delta|Tsawwassen|H||2242263446
+04|20:00|POWER HOUR|Online only|Vancouver|Vancouver|O||9820928386
+06|08:00|EARLY BIRD ONLINE ONLY|Online only|Vancouver|Vancouver|O||162516620
+06|09:30|HOW IT WORKS|Ladner Adult Learning Centre|4748 57 St b, Delta|Ladner|P||
+0|08:30|ALOHA SPIRIT BEACH MEETING|John Lawson Park|17th St, West Vancouver|West Vancouver|P|SP|
+0|09:30|SUNRISE SERENITY|Waves Coffee House|715 Columbia St, New Westminster|New Westminster|P|B|
+0|10:00|FRIENDS OF BILL W.|Ricky's Country|100 Schoolhouse St, Coquitlam|Coquitlam|P||
+0|10:00|GRANVILLE ISLAND MEN'S|False Creek Community Centre|1318 Cartwright St, Vancouver|Vancouver|P|M|
+0|10:00|KITSUN ONLINE MEETING|Online only|Vancouver|Vancouver|O||82148289446
+0|10:00|KITSUN|St. James Community Square|3214 W 10th Ave, Vancouver|Vancouver|P||
+0|10:00|SUNSET AT 10AM|Sunset Towers|1655 Barclay St, Vancouver|Vancouver|P||
+0|10:00|TRINITY|Alano Club of Vancouver|1525 W 7th Ave, Vancouver|Vancouver|P||
+0|10:00|WHITE ROCK MORNING DISCUSSION|Masonic Hall|15302 Pacific Ave, White Rock|White Rock|P||
+0|10:30|T-SUN GRP|Vancouver Recovery Club|2775 Sophia St, Vancouver|Vancouver|P||
+0|11:00|BURNABY FELLOWSHIP NOON MEETING|Burnaby Fellowship Centre|7638 6th St, Burnaby|Burnaby|P||
+0|11:00|PARK MEETING|Queen's Avenue United Church|529 Queens Ave, New Westminster|New Westminster|P||
+0|11:00|SERENE SUNDAY|One Way Club|22270 North Ave, Maple Ridge|Maple Ridge|H||88395230029
+0|11:00|SUNDAY BREAKFAST MEETING|North Shore Alano Club Annex|175 E 3rd St, North Vancouver|North Vancouver|P||
+0|12:00|SUNDAY SOLUTION|Confederation Park|250 Willingdon Ave, Burnaby|Burnaby|P||
+0|12:00|THE NOONER|QMUNITY|1170 Bute St, Vancouver|Vancouver|H|B|851238688
+0|12:30|O.T.L.B. ONLINE|Online only|Vancouver|Vancouver|O||78536104637
+0|13:00|KEYSTONE GRP BEGINNERS BOOK STUDY|Online only|Vancouver|Vancouver|O|B BE|6488658508
+0|13:00|RIFF RAFF GRP|Mole Hill|1157 Jepson-Young Ln, Vancouver|Vancouver|P||
+0|14:00|AA VANCOUVER|Online only|Vancouver|Vancouver|O|B|83314248802
+0|15:00|YA! YOU TOO!|Gathering Place|609 Helmcken St, Vancouver|Vancouver|P|ST|
+0|17:15|YALETOWN HAPPY HOUR ONLINE|Online only|Vancouver|Vancouver|O|C|87850593192
+0|18:00|SUNDAY NIGHT TOPIC|North Shore Alano Club Annex|175 E 3rd St, North Vancouver|North Vancouver|P|SP|
+0|18:15|FRASER VALLEY YOUNG PEOPLES BEGINNERS MEETING|St. Aidan's Church|1320 7th Ave, New Westminster|New Westminster|P|BE|
+0|18:30|PHOENIX MEN'S STEP|Crossroad's United Church|7655 120 St, Delta|Delta|P|C M ST|
+0|18:30|RENFREW BEGINNERS MEETING|Longhouse|2595 Franklin St, Vancouver|Vancouver|H|BE|4826848292
+0|18:30|YOU ARE NOT ALONE: YANA WOMEN|Online only|Vancouver|Vancouver|O|W|4787414665
+0|19:00|A NEW FREEDOM (Van)|Hastings Community Preschool|3096 E Hastings St, Vancouver|Vancouver|P|SP|
+0|19:00|BIG BOOK CLUB|Online only|Vancouver|Vancouver|O|B SP|4353030651
+0|19:00|FELLOWSHIP OF THE SPIRIT NEWCOMERS|St. James Community Square|3214 W 10th Ave, Vancouver|Vancouver|P|BE|
+0|19:00|SUNDAY LONERS|Mole Hill|1157 Jepson-Young Ln, Vancouver|Vancouver|P||
+0|19:00|SUNDAY NIGHT BIG BOOK MEETING|Online only|Vancouver|Vancouver|O||456434693
+0|19:00|SUNDAY NIGHT SERENITY|One Way Club|22270 North Ave, Maple Ridge|Maple Ridge|P||
+0|19:00|THE 12 STEPS|The Salvation Army White Rock|15417 Roper Ave, White Rock|White Rock|P|ST|
+0|19:00|TSAWWASSEN SUNDAY NIGHT|Little House|5061 12 Ave, Delta|Tsawwassen|P||
+0|19:00|WEST END WOMENS|QMUNITY|1170 Bute St, Vancouver|Vancouver|P|B LGBTQ W|
+0|19:30|JOURNEY TO SERENITY|St. Stephen's Church|9887 Cameron St, Burnaby|Burnaby|P||
+0|19:30|LIVING ROOM GROUP|Salvation Army - Chapel|119 E Cordova St, Vancouver|Vancouver|P||
+0|19:30|PHOENIX MEN'S|Crossroad's United Church|7655 120 St, Delta|Delta|P|C M|
+0|19:30|SOBER SUNDAY (Poco)|Kinsmen Centre|2175 Coquitlam Ave, Port Coquitlam|Port Coquitlam|H||462624775
+0|19:30|UNITY, SERVICE AND RECOVERY|Sunshine Ridge Baptist Church|6230 120 St, Surrey|Surrey|P||
+0|19:30|WHITE ROCK SUNDAY NIGHT BIG BOOK|Masonic Hall|15302 Pacific Ave, White Rock|White Rock|P|B C|
+0|20:00|AS BILL SEES IT (Van)|St. Francis of Assisi Church|2025 Napier St, Vancouver|Vancouver|P|C|
+0|20:00|FELLOWSHIP OF THE SPIRIT|St. James Community Square|3214 W 10th Ave, Vancouver|Vancouver|P||
+0|20:00|FRASER VALLEY YOUNG PEOPLE|St. Aidan's Church|1320 7th Ave, New Westminster|New Westminster|P||
+0|20:00|RENFREW GROUP|Longhouse|2595 Franklin St, Vancouver|Vancouver|H||4826848292
+0|20:00|STEVESTON GROUP|Steveston United Church|3720 Broadway St, Richmond|Richmond|P||
+123456|07:00|EARLY RISERS|Church of the Holy Trinity|15115 Roper Ave, White Rock|White Rock|P|C|
+123456|12:00|BURNABY FELLOWSHIP NOON MEETING|Burnaby Fellowship Centre|7638 6th St, Burnaby|Burnaby|P||
+123456|12:00|D-DAY GROUP|Vancouver Recovery Club|2775 Sophia St, Vancouver|Vancouver|P||
+123456|14:00|AA VANCOUVER|Online only|Vancouver|Vancouver|O|B|83314248802
+12345|08:00|RIVER GROUP|Sacred Heart Monastery|3900 Arthur Dr, Delta|Ladner|P||
+12345|08:00|SUNRISE SERENITY|Waves Coffee House|715 Columbia St, New Westminster|New Westminster|H|B|869799013
+12345|10:00|VIEWPOINT|Alano Club of Vancouver|1525 W 7th Ave, Vancouver|Vancouver|P||
+12345|12:00|JOURNEY TO FREEDOM|St. Stephen's Church|9887 Cameron St, Burnaby|Burnaby|P||
+12345|12:05|POCO NOONER|Kinsmen Centre|2175 Coquitlam Ave, Port Coquitlam|Port Coquitlam|P||
+12345|12:15|MTWTF|Christ Church Cathedral|690 Burrard St, Vancouver|Vancouver|P|B BE ST|
+12345|14:00|REFLECTIONS MEETING|Alano Club of Vancouver|1525 W 7th Ave, Vancouver|Vancouver|P||
+12345|16:00|SIMPLE AT 4|North Shore Alano Club Annex|175 E 3rd St, North Vancouver|North Vancouver|P||
+12345|17:15|YALETOWN HAPPY HOUR ONLINE|Online only|Vancouver|Vancouver|O|C ST|87850593192
+12345|17:15|YALETOWN HAPPY HOUR|Roundhouse Community Centre|181 Roundhouse Mews, Vancouver|Vancouver|P||
+12346|12:00|THE NOONER|QMUNITY|1170 Bute St, Vancouver|Vancouver|P|LGBTQ|
+1234|08:00|HOW IT WORKS|Ladner Adult Learning Centre|4748 57 St b, Delta|Ladner|P||
+1245|12:00|AA LUNCH BUNCH|North Shore Alano Club Annex|175 E 3rd St, North Vancouver|North Vancouver|P||
+135|11:30|MEDITATION MEETING|Alano Club of Vancouver|1525 W 7th Ave, Vancouver|Vancouver|P||
+135|19:00|UNA VISIÓN PARA TÍ|Hastings Community Preschool|3096 E Hastings St, Vancouver|Vancouver|P|S|
+145|07:00|SINGLENESS OF PURPOSE|Masonic Hall|15302 Pacific Ave, White Rock|White Rock|H|C|82978326098
+156|17:00|WHITE ROCK FIVER|Masonic Hall|15302 Pacific Ave, White Rock|White Rock|P||
+15|12:00|EDMONDS SOBRIETY|St. Alban's Church|7717 19th Ave, Burnaby|Burnaby|P||
+15|19:00|FIRESIDE WHITE ROCK|Masonic Hall|15302 Pacific Ave, White Rock|White Rock|P||
+1|07:30|NEW DAWN|Coquitlam Grill|2635 Barnet Hwy, Coquitlam|Coquitlam|P||
+1|08:00|A VISION FOR YOU|Online only|Vancouver|Vancouver|O||2242263446
+1|08:00|EARLY BIRD|Online only|Vancouver|Vancouver|O||162516620
+1|08:00|MEDITATE AT 8|Online only|Vancouver|Vancouver|O||4353030651
+1|12:00|MONDAY MESSAGES|One Way Club|22270 North Ave, Maple Ridge|Maple Ridge|P||
+1|12:00|SERENITY ON THE MOUNTAIN|Simon Fraser University, Multifaith Centre|8888 University Dr W #3200, Burnaby|Burnaby|H|B|81648880924
+1|12:15|NO BULL|Princeton Grill|1901 Powell St, Vancouver|Vancouver|P|B C M|
+1|12:30|SOUL FOOD|Union Gospel Mission New Westminster|658 Clarkson St, New Westminster|New Westminster|P|BE SP|
+1|17:00|GAY MEN 55+ ONLINE MEETING|Online only|Vancouver|Vancouver|O|G M SP|6617784810
+1|17:30|HOW IT WORKS|Ladner Adult Learning Centre|4748 57 St b, Delta|Ladner|P|SP|
+1|18:00|WOMEN'S KEYSTONE GRP|Online only|Vancouver|Vancouver|O|B C W|6488658508
+1|18:30|BAY GROUP BEGINNER'S MEETING|Vancouver Recovery Club|2775 Sophia St, Vancouver|Vancouver|P|BE ST|
+1|18:30|MONDAY NIGHT WOMEN'S BIG BOOK MEETING|Alano Club of Vancouver|1525 W 7th Ave, Vancouver|Vancouver|P|B ST W|
+1|18:30|YOU ARE NOT ALONE: Remote Connections|Online only|Vancouver|Vancouver|O||4787414665
+1|19:00|BRENTWOOD GROUP|St Timothy Anglican Church|4550 Kitchener St, Burnaby|Burnaby|P||
+1|19:00|BRIDGE TO HOPE|SUMS Place|10776 King George Blvd, Surrey|Surrey|P||
+1|19:00|DOLPHIN BEGINNERS|First Church of the Nazarene|998 E 19th Ave, Vancouver|Vancouver|P|BE|
+1|19:00|FRANTIC SERENITY|Church of the Holy Trinity|15115 Roper Ave, White Rock|White Rock|P|B|
+1|19:00|G.F. STRONG AA|GF Strong Rehabilitation Centre|4255 Laurel St, Vancouver|Vancouver|P|BE|
+1|19:00|JOURNEY TOGETHER|Online only|Vancouver|Vancouver|O||4453926607
+1|19:00|MONDAY MEN'S STEP|North Shore Alano Club Annex|175 E 3rd St, North Vancouver|North Vancouver|P|C ST|
+1|19:00|MONDAY NIGHT MEDITATION|Holy Trinity Church|1440 W 12th Ave, Vancouver|Vancouver|P||
+1|19:00|SAINTS WE AIN'T|New Hope Christian Church|11838 88 Ave, Delta|Delta|P||
+1|19:00|STEPPING STONES 12X12|St. James Community Square|3214 W 10th Ave, Vancouver|Vancouver|P||
+1|19:00|SULLIVAN HEIGHTS BIG BOOK|Berea Church|6062 132 St, Surrey|Surrey|P|B C|
+1|19:00|SUNLIGHT OF THE SPIRIT|Online only|Vancouver|Vancouver|O|B ST W|89469768149
+1|19:00|WOMEN IN SOBRIETY|Burnaby Fellowship Centre|7638 6th St, Burnaby|Burnaby|P|W|
+1|19:30|FARSI SPEAKING|St. Stephen's Church|9887 Cameron St, Burnaby|Burnaby|P|B|
+1|19:30|GARDEN VARIETY|Ruskin Community Hall|28395 96 Ave, Maple Ridge|Maple Ridge|P||
+1|19:30|JUST 4 TODAY|St. Kateri Centre|887 Keefer St, Vancouver|Vancouver|P||
+1|19:30|MEN'S DAILY REFLECTIONS|Online only|Vancouver|Vancouver|O|M|863395587
+1|19:30|MONDAY NIGHT LIVE|Online only|Vancouver|Vancouver|O|C W|84554065484
+1|19:30|MONDAY NITE MEN'S|St. Johns' Presbyterian|1480 George St, White Rock|White Rock|P|C M|
+1|19:30|SHAUGHNESSY MEN'S|Shaughnessy Hts.United Church|1550 W 33rd Ave, Vancouver|Vancouver|P|B C M ST|
+1|19:30|ST. JOHN'S 12X12|St. John's Church|2206 St Johns St, Port Moody|Port Moody|P|ST|
+1|19:30|TNBB|Calvary Baptist Church|1636 Regan Ave, Coquitlam|Coquitlam|P|B|
+1|19:30|WEST VANCOUVER GROUP ONLINE|Online only|Vancouver|Vancouver|O||621106503
+1|19:30|WEST VANCOUVER GROUP|St. Christopher's Church|1068 Inglewood Ave, West Vancouver|West Vancouver|P||
+1|20:00|BAY GROUP|Vancouver Recovery Club|2775 Sophia St, Vancouver|Vancouver|H|SP|2808652586
+1|20:00|DOLPHIN GROUP|First Church of the Nazarene|998 E 19th Ave, Vancouver|Vancouver|P||
+1|20:00|EASTSIDE MEN'S|Longhouse|2595 Franklin St, Vancouver|Vancouver|P|C M|
+1|20:00|GOLDEN KEY STEPS & TRADITIONS|Online only|Vancouver|Vancouver|O|C ST|89585648771
+1|20:00|ISLAND GROUP|East Richmond Community Hall|12360 Cambie Rd., Richmond|Richmond|P||
+1|20:00|KERRISDALE MEN'S|Holy Cross Anglican Church|4580 Walden St, Vancouver|Vancouver|P|C M|
+1|20:00|MONDAY NIGHT PITT MEADOWS GROUP|Grace Community Church|12240 Harris Rd, Pitt Meadows|Pitt Meadows|H||83401920576
+1|20:00|MONDAY NIGHT WOMEN’S|Alano Club of Vancouver|1525 W 7th Ave, Vancouver|Vancouver|P|W|
+1|20:00|ST ANDREW'S MEN'S|King of Life Lutheran Church|1198 Falcon Dr, Coquitlam|Coquitlam|P|C M|
+1|20:00|THE PARK 12 AND 12|Park House|5400 River Rd, Richmond|Richmond|P|ST|
+1|20:00|WEST END GROUP, JOE & CHARLIE TAPES|Saint Barnabas Anglican Church|1010 5th Ave, New Westminster|New Westminster|P|ST|
+1|20:30|TRI CIRCLE|St. Anne's Steveston Anglican Church|4071 Francis Rd, Richmond|Richmond|P||
+1|21:00|HORSESHOE BAY MEN'S|St. Francis in the Wood Anglican Church|4773 Piccadilly S, West Vancouver|West Vancouver|P|C M|
+23|07:00|SINGLENESS OF PURPOSE|Masonic Hall|15302 Pacific Ave, White Rock|White Rock|H|C|82978326098
+23|08:00|A VISION FOR YOU|Online only|Vancouver|Vancouver|O||2242263446
+25|08:00|EARLY BIRD|Online only|North Vancouver|North Vancouver|O||162516620
+2|10:00|10 O'CLOCK CLUB|Vancouver Recovery Club|2775 Sophia St, Vancouver|Vancouver|P|B BE|
+2|11:15|ALANO BIG BOOK STUDY|Alano Club of Vancouver|1525 W 7th Ave, Vancouver|Vancouver|P|B|
+2|11:15|NO HUMAN POWER BIG BOOK STUDY|Online only|Vancouver|Vancouver|O|B|88319208983
+2|12:00|A NEW FREEDOM (Maple Ridge)|One Way Club|22270 North Ave, Maple Ridge|Maple Ridge|P||
+2|12:00|RIVER GROUP|Sacred Heart Monastery|3900 Arthur Dr, Delta|Ladner|P|C|
+2|12:30|O.T.L.B. ONLINE|Online only|Vancouver|Vancouver|O||78536104637
+2|17:30|NO TELL MOTEL|City Centre Artist Lodge|2111 Main St, Vancouver|Vancouver|P||
+2|18:00|TSAWWASSEN TUESDAY NIGHT 12 STEP|Benediction Lutheran Church|5575 6 Ave, Delta|Tsawwassen|P|C ST|
+2|18:30|AA BIG BOOK MEETING|Avalon Women's Centre White Rock|1548 Johnston Rd, White Rock|White Rock|H|B W|98668239663
+2|18:30|THERE IS A SOLUTION - Beginners|Tenth Church|11 W 10th Ave, Vancouver|Vancouver|P|BE|
+2|18:30|TUESDAY NIGHT WEST VAN BEGINNERS|West Vancouver Presbyterian Church|2893 Marine Dr, West Vancouver|West Vancouver|P|B BE|
+2|18:30|YOU ARE NOT ALONE: Remote Connections|Online only|Vancouver|Vancouver|O|ST|4787414665
+2|18:45|BEGINNER'S MEETING LOUGHEED|New Life Community Church|8765 Government St, Burnaby|Burnaby|P|BE|
+2|19:00|BACK TO AA BASICS|St. Philip's Anglican Church|3737 W 27th Ave, Vancouver|Vancouver|P||
+2|19:00|CENTENNIAL|St. Johns' Presbyterian|1480 George St, White Rock|White Rock|P||
+2|19:00|DENMAN BEGINNERS|Central Presbyterian Church|1155 Thurlow St, Vancouver|Vancouver|P|BE|
+2|19:00|F.T.A. - FREEDOM THROUGH ACTION|Burnaby Fellowship Centre|7638 6th St, Burnaby|Burnaby|P||
+2|19:00|KEYSTONE GRP|Online only|Vancouver|Vancouver|O|BE|6488658508
+2|19:00|KITSUN STEPS & TRADITIONS|St. James Community Square|3214 W 10th Ave, Vancouver|Vancouver|P|C BE ST|
+2|19:00|RUBY TUESDAY|Ladner United Church|4960 48 Ave, Delta|Ladner|H|W|91072335709
+2|19:00|UNA VISIÓN PARA TÍ|Hastings Community Preschool|3096 E Hastings St, Vancouver|Vancouver|P|S|
+2|19:00|WOMEN IN THE SPIRIT|Wildwood Park Amenities Hall|201 Cayer St, Coquitlam|Coquitlam|P|B C W|
+2|19:15|BEFORE THE AFTER MEETING|Collins Hall|1122 Miller Rd, Bowen Island|Bowen Island|P||
+2|19:30|ALPHA GROUP|One Way Club|22270 North Ave, Maple Ridge|Maple Ridge|P||
+2|19:30|BATTLE OF HASTINGS|Salvation Army - Chapel|119 E Cordova St, Vancouver|Vancouver|P||
+2|19:30|CAPILANO|Gloria Dei Church|1110 Gladwin Dr, North Vancouver|North Vancouver|P|B|
+2|19:30|COME TO BELIEVE|Richmond Presbyterian Church|7111 No 2 Rd, Richmond|Richmond|P|C|
+2|19:30|DEER LAKE FEELINGS|Deer Lake United Church|5135 Sperling Ave, Burnaby|Burnaby|P||
+2|19:30|GOLDEN KEY|Fairview Baptist Church|1708 W 16th Ave, Vancouver|Vancouver|P||
+2|19:30|MARITIME GROUP|Grandview Church|1803 E 1st Ave, Vancouver|Vancouver|P||
+2|19:30|NORTH DELTA|Crossroad's United Church|7655 120 St, Delta|Delta|P||
+2|19:30|THERE IS A SOLUTION|Tenth Church|11 W 10th Ave, Vancouver|Vancouver|P|SP|
+2|19:30|TRADITIONAL STEPSISTERS|Open Door Church|11391 Dartford St, Maple Ridge|Maple Ridge|P|C W|
+2|19:30|TUESDAY NIGHT WEST VANCOUVER|West Vancouver Presbyterian Church|2893 Marine Dr, West Vancouver|West Vancouver|P||
+2|19:30|WELCOME HOME|St. Augustine’s Church|8680 Hudson St, Vancouver|Vancouver|P||
+2|20:00|BEAR CREEK NO SMOKE|Bear Creek Pavillion|13750 88 Ave, Surrey|Surrey|P||
+2|20:00|BURNABY LODGE|Jubilee United Church|7591 Gray Ave, Burnaby|Burnaby|P||
+2|20:00|DEEP COVE GROUP|Parkgate Community Centre|3625 Banff Ct, North Vancouver|North Vancouver|P||
+2|20:00|DEEP COVE ONLINE|Online only|Vancouver|Vancouver|O||465694374
+2|20:00|DENMAN GROUP|Central Presbyterian Church|1155 Thurlow St, Vancouver|Vancouver|H||81870309440
+2|20:00|DOUBLE YOUR SOBRIETY 12X12|Vancouver Recovery Club|2775 Sophia St, Vancouver|Vancouver|P||
+2|20:00|HAVING A GOOD DAY|St. Barnabas Anglican Church|1010 5th Ave, New Westminster|New Westminster|P||
+2|20:00|HOPE GROUP|Hope Reformed Church|900 E 19th Ave, Vancouver|Vancouver|P||
+2|20:00|KENNEDY HEIGHTS|Online only|Vancouver|Vancouver|O||81497627999
+2|20:00|LOUGHEED SPEAKER|New Life Community Church|8765 Government St, Burnaby|Burnaby|P|SP|
+2|20:00|MEAT AND POTATOES|Star of the Sea Hall|15262 Pacific Ave, White Rock|White Rock|P|B|
+2|20:00|POCO TUESDAY|Kinsmen Centre|2175 Coquitlam Ave, Port Coquitlam|Port Coquitlam|H||462624775
+2|20:00|PUNJABI SPEAKING|Residential Location|6049 Inverness St, Vancouver|Vancouver|P|PUN|
+2|20:00|SOBER DADS|Vancouver Odd Fellows|1443 W 8th Ave, Vancouver|Vancouver|P|C M|
+2|20:00|SOBRIETY IS ONLY THE START|Eagle Ridge Bible Fellowship|1160 Lansdowne Dr, Coquitlam|Coquitlam|P||
+2|20:00|VANCOUVER HEIGHTS ONLINE|Online only|Burnaby|Burnaby|O||85155219123
+2|20:30|KITSILANO|Kitsilano War Memorial Community Centre|2690 Larch St, Vancouver|Vancouver|P||
+2|22:00|YOU ARE NOT ALONE: Remote Connections|Online only|Vancouver|Vancouver|O|ST|4787414665
+34|19:00|KEYSTONE GRP|Online only|Vancouver|Vancouver|O|B|6488658508
+3|08:00|EARLY BIRD|Online only|North Vancouver|North Vancouver|O||162516620
+3|08:00|MEDITATE AT 8|Online only|Vancouver|Vancouver|O||4353030651
+3|09:10|EARLY BIRD STEP DISCUSSION|Online only|Vancouver|Vancouver|O|ST|162516620
+3|09:45|EARLY MORNING COFFEE AND DONUTS|Online only|Surrey|Surrey|O||383660385
+3|12:00|AA LUNCH BUNCH|North Shore Alano Club Annex|175 E 3rd St, North Vancouver|North Vancouver|P||
+3|12:00|BURNETT BROWN BAG|Burnett Fellowship Baptist Church|20639 123 Ave, Maple Ridge|Maple Ridge|P||
+3|12:00|DAILY REFLECTIONS ONLINE|Online only|Vancouver|Vancouver|O||474021194
+3|12:00|HIGH NOON|One Way Club|22270 North Ave, Maple Ridge|Maple Ridge|P||
+3|12:00|RIVER GROUP|Sacred Heart Monastery|3900 Arthur Dr, Delta|Ladner|P||
+3|12:15|LUNCH WITH BILL|Princeton Grill|1901 Powell St, Vancouver|Vancouver|P|C|
+3|17:00|EXPERIENCE, STRENGTH & HOPE|Church of the Holy Trinity|15115 Roper Ave, White Rock|White Rock|P|C|
+3|17:00|WHITE ROCK FIVER|Masonic Hall|15302 Pacific Ave, White Rock|White Rock|P||
+3|17:30|KITSUN WOMEN'S STEP MEETING|Online only|Vancouver|Vancouver|O|ST W|87980532534
+3|18:30|AA QUEER+TRANS all welcome|Britannia Community Centre|1661 Napier St, Vancouver|Vancouver|P|LGBTQ|
+3|18:30|LION'S GROUP BEGINNERS|St. Albans Church|7260 St Albans Rd, Richmond|Richmond|P|BE|
+3|18:30|NEW WEDNESDAY NIGHT BEGINNERS MEETING|St Stephens Church|855 22nd St, West Vancouver|West Vancouver|H|BE|89941777102
+3|18:30|NIGHT ASHTREY|Ashtrey Recovery Resource Centre|450 E Hastings St, Vancouver|Vancouver|P|BE|
+3|18:30|OPEN DOOR DISCUSSION|Strawberry Hill Branch of Surrey Libraries|7399 122 St, Surrey|Surrey|P|ST|
+3|19:00|BIG BOOK QUESTIONS & ANSWERS|St. Cuthbert's Church|11601 82 Ave, Delta|Delta|P|B|
+3|19:00|BURNABY MEN'S GROUP|Burnaby Fellowship Centre|7638 6th St, Burnaby|Burnaby|P|C M|
+3|19:00|FLEETWOOD AACTION GROUP|Fleetwood Christian Reformed Church|9165 160 St, Surrey|Surrey|H|B C ST|73836039415
+3|19:00|FORTUNATE FEW|Gordon Presbyterian Church|7457 Edmonds St, Burnaby|Burnaby|P|B C W|
+3|19:00|LIONS BAY|Village of Lions Bay Office and Community Hall|400 Centre Rd, Lions Bay|Lions Bay|P||
+3|19:00|RIFF RAFF GRP|Mole Hill|1157 Jepson-Young Ln, Vancouver|Vancouver|P|BE|
+3|19:00|TALKING TREES BIG BOOK MEETING|Star of the Sea Hall|15262 Pacific Ave, White Rock|White Rock|P|B C|
+3|19:15|OVER THE HUMP|North Shore Alano Club Annex|175 E 3rd St, North Vancouver|North Vancouver|P||
+3|19:30|CENTRE GROUP|St. Aidan's Church|1320 7th Ave, New Westminster|New Westminster|P|SP|
+3|19:30|FRIENDSHIP CIRCLE|Friendship Centre|1607 E Hastings St, Vancouver|Vancouver|P||
+3|19:30|LION'S GROUP|St. Albans Church|7260 St Albans Rd, Richmond|Richmond|P|C|
+3|19:30|LIVING SOBER|Fairview Baptist Church|1708 W 16th Ave, Vancouver|Vancouver|P|SP|
+3|19:30|NEW BEGINNINGS 12 X 12|Maillardville Community Centre|1200 Cartier Ave, Coquitlam|Coquitlam|P|C ST W|
+3|19:30|NORTH LONSDALE WEDNESDAY MEN'S STEP|North Lonsdale United Church|3380 Lonsdale Ave, North Vancouver|North Vancouver|P|C M ST|
+3|19:30|ROYAL OAK GROUP|Jubilee United Church|7591 Gray Ave, Burnaby|Burnaby|P||
+3|19:30|WEDNESDAY NIGHT BIG BOOK|Online only|Vancouver|Vancouver|O|B C M|83499755860
+3|19:30|WEST VANCOUVER GROUP BEGINNERS|St. Christopher's Church|1068 Inglewood Ave, West Vancouver|West Vancouver|P|BE|
+3|19:30|WHYTECLIFF|St. Stephen's Church|885 22nd St, West Vancouver|West Vancouver|P||
+3|19:45|COQUITLAM 12 X 12|Centennial Pavilion|630 Poirier St, Coquitlam|Coquitlam|P|ST|
+3|20:00|BEST DISCUSSION|St. Alban's Church|7717 19th Ave, Burnaby|Burnaby|H||92476906025
+3|20:00|CRESCENT HEIGHTS DISCUSSION|Peninsula United Church|15639 24 Ave, Surrey|White Rock|P||
+3|20:00|FALCON DRIVE DISCUSSION|King of Life Lutheran Church|1198 Falcon Dr, Coquitlam|Coquitlam|P||
+3|20:00|HARRIS ROAD NO SMOKE|Online only|Pitt Meadows|Pitt Meadows|O||363588551
+3|20:00|INDO CANADIAN|Bear Creek Pavillion|13750 88 Ave, Surrey|Surrey|P|PUN|
+3|20:00|KERRISDALE A2 ONLINE|Online only|Vancouver|Vancouver|O||6041641212
+3|20:00|RENEGADE WARRIORS|Vancouver Recovery Club|2775 Sophia St, Vancouver|Vancouver|P||
+3|20:00|SEAFAIR BIG BOOK MEETING|St. Anne's Steveston Anglican Church|4071 Francis Rd, Richmond|Richmond|P|B|
+3|20:00|SOBER ALL OVER|One Way Club|22270 North Ave, Maple Ridge|Maple Ridge|P||
+3|20:00|TSAWWASSEN 12th AVE. MEN'S|Little House|5061 12 Ave, Delta|Tsawwassen|P|C M|
+3|20:00|WEDNESDAY NIGHT CANDLELIGHT|Alano Club of Vancouver|1525 W 7th Ave, Vancouver|Vancouver|H||4588844200
+45|18:30|YOU ARE NOT ALONE: Remote Connections|Online only|Vancouver|Vancouver|O|B|4787414665
+4|08:00|EARLY BIRD|Online only|North Vancouver|North Vancouver|O||162516620
+4|10:30|SPIRITUAL SISTERS BIG BOOK STUDY|North Shore Alano Club Annex|175 E 3rd St, North Vancouver|North Vancouver|P|B C W|
+4|12:00|HIGHER POWER HOUR|One Way Club|22270 North Ave, Maple Ridge|Maple Ridge|H|B|88395230029
+4|12:00|IT'S A GOOD DAY TO BE SOBER|Northwood Church|8855 156 St, Surrey|Surrey|P||
+4|14:15|CORNERSTONE|Union Gospel Mission|601 E Hastings St, Vancouver|Vancouver|P||
+4|18:00|BIG BOOK STUDY|Alano Club of Vancouver|1525 W 7th Ave, Vancouver|Vancouver|P|B|
+4|18:30|6:30 SERENITY|Gilmore United Church|8060 No 1 Rd, Richmond|Richmond|P||
+4|18:30|LOST AND FOUND BB|Peace Church|659 E 52nd Ave, Vancouver|Vancouver|P|B BE|
+4|19:00|DIVINE DELIVERANCE|St. Catherine's Anglican Church|1058 Ridgewood Dr, North Vancouver|North Vancouver|H||9310987730
+4|19:00|NORTHSIDE STEPS AND GUESTS|North Delta Evangelical|11300 84 Ave, Delta|Delta|P|ST|
+4|19:30|BLUE MOUNTAIN|Saint Laurence Church|825 St Laurence St, Coquitlam|Coquitlam|P||
+4|19:30|FREEDOM FOR TODAY|Pitt Meadows United Church|12109 Harris Rd, Pitt Meadows|Pitt Meadows|P||
+4|19:30|HIGHLAND|Highland's United Church|3255 Edgemont Blvd, North Vancouver|North Vancouver|P||
+4|19:30|IN SANITY IN THE 4TH DIMENSION|Gordon Presbyterian Church|7457 Edmonds St, Burnaby|Burnaby|P|B|
+4|19:30|LIFELINE GROUP|Pacific Spirit Memorial Centre|2195 W 45th Ave, Vancouver|Vancouver|P||
+4|19:30|NEW WEST BIG BOOK STUDY|Saint Barnabas Anglican Church|1010 5th Ave, New Westminster|New Westminster|H|B|84697854282
+4|19:30|NORTH SHORE MEN'S STEP|St. John's Anglican Church|220 8th St W, North Vancouver|North Vancouver|P|C M ST|
+4|19:30|STEP INTO RECOVERY WOMEN'S|Online only|Vancouver|Vancouver|O|W|462624775
+4|19:30|STEP SISTERS|Fairview Baptist Church|1708 W 16th Ave, Vancouver|Vancouver|P|C ST W|
+4|19:30|THURSDAY NIGHT LIVE!|Deer Lake United Church|5135 Sperling Ave, Burnaby|Burnaby|P||
+4|19:30|WEST END GRP|Holy Trinity Church|1440 W 12th Ave, Vancouver|Vancouver|P|SP|
+4|20:00|A PLACE OF VISION|Mt. Olive Lutheran Church|2350 148 St, Surrey|White Rock|P|SP|
+4|20:00|BALANCE AND FREEDOM|King of Life Lutheran Church|1198 Falcon Dr, Coquitlam|Coquitlam|P||
+4|20:00|DOUBLE H|One Way Club|22270 North Ave, Maple Ridge|Maple Ridge|H||88395230029
+4|20:00|FRASER GLEN GROUP|St. Helen's Church|10787 128 St, Surrey|Surrey|P||
+4|20:00|HAPPY DESTINY|Christ Church Cathedral|690 Burrard St, Vancouver|Vancouver|H|SP|89061038415
+4|20:00|LIVE and LET LIVE|Canadian United Memorial Church|1825 W 16th Ave, Vancouver|Vancouver|P|LGBTQ|
+4|20:00|LONGHOUSE|Longhouse|2595 Franklin St, Vancouver|Vancouver|P||
+4|20:00|LOST AND FOUND|Peace Church|659 E 52nd Ave, Vancouver|Vancouver|H||83718884962
+4|20:00|NEWPORT MEN'S|Friendship Church|2950 Dewdney Trunk Rd, Coquitlam|Coquitlam|P|C M|
+4|20:00|PARTICIPATION|St. Stephen's Church|7025 Granville St, Vancouver|Vancouver|P||
+4|20:00|SHAUGHNESSY MEN'S|Shaughnessy Hts.United Church|1550 W 33rd Ave, Vancouver|Vancouver|H|M|701886270
+4|20:00|THURSDAY NIGHT MEN'S MTG|Park House|5400 River Rd, Richmond|Richmond|P|C M|
+4|20:00|TRADITION 3|Grace Community Church|14618 110 Ave, Surrey|Surrey|P||
+4|20:00|WELCOME GROUP|Trinity Grace Church|803 E 16th Ave, Vancouver|Vancouver|P||
+4|20:15|RIDGE MEADOWS MEN'S|Pitt Meadows Heritage Hall|12474 Harris Rd, Pitt Meadows|Pitt Meadows|P|C M|
+4|22:00|YOU ARE NOT ALONE: Remote Connections|Online only|Vancouver|Vancouver|O|SP|4787414665
+56|18:00|RIVER GROUP|Sacred Heart Monastery|3900 Arthur Dr, Delta|Ladner|P||
+56|22:00|YOU ARE NOT ALONE: Remote Connections|Online only|Vancouver|Vancouver|O||4787414665
+5|08:00|HOW IT WORKS|Ladner Adult Learning Centre|4748 57 St b, Delta|Ladner|P|B|
+5|09:45|EARLY MORNING COFFEE AND DONUTS|Online only|Surrey|Surrey|O||383660385
+5|12:00|FRIDAY NOON TOPIC|One Way Club|22270 North Ave, Maple Ridge|Maple Ridge|P||
+5|12:00|THE NOONER|QMUNITY|1170 Bute St, Vancouver|Vancouver|P|B LGBTQ|
+5|12:15|NEW PAIR OF GLASSES|Sylvia Hotel|1154 Gilford St, Vancouver|Vancouver|P|B C M|
+5|19:00|2 BE DETERMINED|Cityview Church|4370 Sophia St, Vancouver|Vancouver|P||
+5|19:00|CANDIES AND CANDLELIGHT|Bowen Court Hall|1070 Miller Rd #21, Bowen Island|Bowen Island|P||
+5|19:00|FRIDAY NIGHT BLACKOUT|Park House|5400 River Rd, Richmond|Richmond|P||
+5|19:00|FRONT RUNNERS|Roundhouse Community Centre|181 Roundhouse Mews, Vancouver|Vancouver|P|B LGBTQ|
+5|19:00|GOOD VIBRATIONS|Church of the Holy Trinity|15115 Roper Ave, White Rock|White Rock|P||
+5|19:00|JAY WALKERS BOOK STUDY|Peace Church|659 E 52nd Ave, Vancouver|Vancouver|P|B|
+5|19:00|LANGUAGE OF THE HEART BEGINNER'S|Canucks Family Education Centre|1655 William St, Vancouver|Vancouver|P|BE|
+5|19:00|LET'S READ THE BOOK|Burnaby Fellowship Centre|7638 6th St, Burnaby|Burnaby|P|B|
+5|19:00|PATHFINDERS|Royal Canadian Legion Branch 133|2675 Shaughnessy St, Port Coquitlam|Port Coquitlam|P||
+5|19:00|READ THE BOOK|St. Cuthbert's Church|11601 82 Ave, Delta|Delta|P|B|
+5|19:00|THE DOOR IS STILL OPEN|St. Kateri Centre|887 Keefer St, Vancouver|Vancouver|P||
+5|19:30|ASIAN AVENUE|Vancouver Japanese United Church|4010 Victoria Dr, Vancouver|Vancouver|P||
+5|19:30|COURAGE TO CHANGE|St. Paul's Hospital, Providence Building|1081 Burrard St, Vancouver|Vancouver|P||
+5|19:30|DUNDARAVE|First Church of Christ|714 20th St, West Vancouver|West Vancouver|H||477242051
+5|19:30|GRANT US THE SERENITY|Online only|Vancouver|Vancouver|O||89018660579
+5|19:30|TRADITION 5|King of Life Lutheran Church|1198 Falcon Dr, Coquitlam|Coquitlam|P||
+5|20:00|ANY AND ALL|Online only|Vancouver|Vancouver|O|LGBTQ|333013671
+5|20:00|FRIDAY NIGHT BLUE CARD GRP|Hope Church|3151 York St, Port Coquitlam|Port Coquitlam|P||
+5|20:00|FRIDAY NIGHT LIGHTS|Vancouver Recovery Club|2775 Sophia St, Vancouver|Vancouver|P||
+5|20:00|FRIDAY NIGHT ONE WAY|One Way Club|22270 North Ave, Maple Ridge|Maple Ridge|H||88395230029
+5|20:00|HARMONY|St. James Community Square|3214 W 10th Ave, Vancouver|Vancouver|H||81772922495
+5|20:00|HOW IT WORKS|Ladner Adult Learning Centre|4748 57 St b, Delta|Ladner|P||
+5|20:00|KEEP IT SIMPLE|Millennium Tower|1175 Broughton St, Vancouver|Vancouver|P||
+5|20:00|KING ALBERT ONLINE|Online only|Vancouver|Vancouver|O||89102557434
+5|20:00|KING ALBERT SERENITY|Calvary Baptist Church|1636 Regan Ave, Coquitlam|Coquitlam|P||
+5|20:00|LANGUAGE OF THE HEART|Canucks Family Education Centre|1655 William St, Vancouver|Vancouver|P||
+5|20:00|SAPPERTON|Saint Barnabas Anglican Church|1010 5th Ave, New Westminster|New Westminster|P||
+5|20:00|TRADITION 3.0|Online only|Vancouver|Vancouver|O||6179680872
+5|20:00|WESTWOOD MEN'S GROUP|St. Clare of Assisi|1320 Johnson St, Coquitlam|Coquitlam|P|C M|
+5|20:30|KINGSWAY|Killarney Community Lutheran Church|3022 E 49th Ave, Vancouver|Vancouver|P||
+5|21:00|1728 STUDY|Online only|Vancouver|Vancouver|O|B ST|8742315647
+6|07:00|SINGLENESS OF PURPOSE|Masonic Hall|15302 Pacific Ave, White Rock|White Rock|P|C|
+6|07:00|SPIRITUAL SATURDAY MORNING BREAKFAST|Sylvia Hotel|1154 Gilford St, Vancouver|Vancouver|P||
+6|08:00|MEDITATE AT 8|Online only|Vancouver|Vancouver|O||4353030651
+6|08:00|SUNRISE SERENITY ONLINE|Online only|Vancouver|Vancouver|O|B|869799013
+6|09:00|CANADA AM|North Lonsdale United Church|3380 Lonsdale Ave, North Vancouver|North Vancouver|P||
+6|09:00|OLD TIME BOWEN|Collins Hall|1122 Miller Rd, Bowen Island|Bowen Island|P||
+6|09:00|RIVER GROUP|Sacred Heart Monastery|3900 Arthur Dr, Delta|Ladner|P||
+6|09:15|WAKE UP AND LIVE AND BREATHE|Maillardville Community Centre|1200 Cartier Ave, Coquitlam|Coquitlam|H|M ST|87013291327
+6|09:30|SUNRISE SERENITY|Waves Coffee House|715 Columbia St, New Westminster|New Westminster|P|B|
+6|09:30|WHO ME MEN'S STEP|St. Mary's Church (Kerrisdale)|2490 W 37th Ave, Vancouver|Vancouver|H|M ST|6047783333
+6|10:00|EDMONDS SOBRIETY|St. Alban's Church|7717 19th Ave, Burnaby|Burnaby|P||
+6|10:00|SATURDAY MORNING DILEMMA GRP|Alano Club of Vancouver|1525 W 7th Ave, Vancouver|Vancouver|P||
+6|10:00|SATURDAY STEPS/TRADITIONS|Online only|Coquitlam|Coquitlam|O|ST|81896275459
+6|10:30|AA BIG BOOK MEETING|Avalon Women's Centre North Shore|2225 Marine Dr, West Vancouver|West Vancouver|H|B W|93266160292
+6|10:30|ALIVE AFTER THE DRIVE|Holy Cross Anglican Church|4580 Walden St, Vancouver|Vancouver|P||
+6|10:30|WHO ME?|St. Mary's Church (Kerrisdale)|2490 W 37th Ave, Vancouver|Vancouver|P||
+6|12:00|ATTITUDE ADJUSTMENT HOUR|Park House|5400 River Rd, Richmond|Richmond|P||
+6|12:00|HIGH NOONERS|Online only|North Vancouver|North Vancouver|O||
+6|12:00|SOBER LIVING|St. Cuthbert's Church|11601 82 Ave, Delta|Delta|P||
+6|14:00|HANEY LEGACY GRP|One Way Club|22270 North Ave, Maple Ridge|Maple Ridge|H||88392530029
+6|16:00|O.T.L.B. BIG BOOK STUDY|Online only|Vancouver|Vancouver|O|B|78536104637
+6|17:15|YALETOWN HAPPY HOUR WEEKEND EDITION|Gathering Place|609 Helmcken St, Vancouver|Vancouver|P|C|
+6|18:30|SATURDAY NIGHT SOBRIETY|Church of the Epiphany|10553 148 St, Surrey|Surrey|P||
+6|19:00|BURNABY NEW LIFE|The Church of The Christian Community|5050 E Hastings St, Burnaby|Burnaby|P||
+6|19:00|HAMMOND GROUP|Open Door Church|11391 Dartford St, Maple Ridge|Maple Ridge|P||
+6|19:00|LAST CHANCE|St. Andrew's Hall|6040 Iona Dr, Vancouver|Vancouver|P||
+6|19:00|SATURDAY NIGHT LIVE|Alano Club of Vancouver|1525 W 7th Ave, Vancouver|Vancouver|P|B|
+6|19:00|THREE-FIVE|St Agnes Anglican Church|530 E 12th St, North Vancouver|North Vancouver|P||
+6|19:30|NORTH SHORE LIVE|North Shore Alano Club Annex|175 E 3rd St, North Vancouver|North Vancouver|P||
+6|19:30|PAGE 13|Peace Church|659 E 52nd Ave, Vancouver|Vancouver|P||
+6|19:30|PERMANENTLY TEMPORARY|Vancouver Recovery Club|2775 Sophia St, Vancouver|Vancouver|P||
+6|19:30|SAT NGT SPECIAL|St. Paul's Lutheran Church|12145 Laity St, Maple Ridge|Maple Ridge|P||
+6|19:30|SATURDAY NIGHT'S ALRIGHT ALRIGHT|Saint Barnabas Anglican Church|1010 5th Ave, New Westminster|New Westminster|P||
+6|19:30|WEST POINT GREY|St. Helen's Anglican Church|4405 W 8th Ave, Vancouver|Vancouver|P||
+6|20:00|FLICKERING SPIRITS|St. Joseph The Worker Parish|4451 Williams Rd, Richmond|Richmond|P||
+6|20:00|FREE SPIRIT|Longhouse|2595 Franklin St, Vancouver|Vancouver|P||
+6|20:00|GRANDVIEW GROUP|Christian Reformed Church|2670 Victoria Dr, Vancouver|Vancouver|H||4929592081
+6|20:00|SATURDAY NIGHT PUNJABI GRP|St. Cuthbert's Church|11601 82 Ave, Delta|Delta|P|PUN|
+6|20:00|WEST END MEN'S|Millennium Tower|1175 Broughton St, Vancouver|Vancouver|P|LGBTQ M|
+6|20:00|WHITE ROCK SATURDAY NIGHT|Online only|White Rock|White Rock|O||675990346
+6|20:30|SPRICE AVE. GROUP|Good Shepherd Lutheran Church|1504 Sprice Ave, Coquitlam|Coquitlam|P||
 `});
 
 </script>
 <script>
-// AA BC/Yukon Area 79 feed (bcyukonaa.org), District 43 and nearby. Last updated 11 Oct 2026. Pulled 23 Oct 2026.
-// Cloverdale, Langley, Fort Langley, Aldergrove, east and south Surrey. Service/committee meetings left out.
+// AA BC/Yukon Area 79 feed (bcyukonaa.org), pulled 7 Nov 2026. Langley, Cloverdale, east Surrey, Aldergrove,
+// Abbotsford, Mission, Chilliwack and the Fraser Valley. Treatment-centre and institution meetings left out.
 // Row: days | start | name | venue | address | region | P/H/O | type codes | zoom
 addSource({
-  id:"aa-d43", name:"AA District 43 (Langley · Cloverdale)", updated:"11 Oct 2026", link:"https://bcyukonaa.org/meetings/",
+  id:"aa-d43", name:"AA Langley · Fraser Valley", updated:"7 Nov 2026", link:"https://bcyukonaa.org/meetings/",
   fellowship:"AA", format:"aa",
-  note:"Langley Intergroup runs these. Monthly meetings say so in the name.",
+  note:"Langley and Fraser Valley intergroups run these. Monthly meetings say so in the name.",
   rows:`
+0123456|06:40|ATTITUDE ADJUSTMENT|Alano Club|2584 Cyril St, Abbotsford|Abbotsford|P||
+0123456|07:30|EARLY BIRD|Alano Club of Chilliwack|46035 Victoria Ave, Chilliwack|Chilliwack|P||
+0123456|12:00|DAILY REFLECTIONS|Alano Club|2584 Cyril St, Abbotsford|Abbotsford|P||
+056|12:00|THE WAY OUT GROUP|Alano Club|20473 Douglas Cres, Langley|Langley|P||
+06|13:00|SERENITY HOUR GROUP|Mission Alano Club|33229 N Railway Ave, Mission|Mission|P||
 0|09:00|STEP 11 MEDITATION CLASS|Alano Club|20473 Douglas Cres, Langley|Langley|P||
-0|09:00|Women's AA Book Discussion|Online only|Langley|Langley|O|C D W ONL|966193796
-0|10:30|MANY PATHS - SECULAR MTG|Alano Club|20473 Douglas Cres, Langley|Langley|P|O X|
-056|12:00|THE WAY OUT GROUP|Alano Club|20473 Douglas Cres, Langley|Langley|P|O|
-0|19:00|CLOVERDALE CROWD|Cloverdale United Church|17575 58A Ave, Surrey|Cloverdale|P|O|
-0|19:00|CORRECTIONS CORNER - Last Sunday of every month|Online only|Langley|Langley|O|O SP ONL|99150323288
-0|19:30|GATEWAY TO HOPE|Salvation Army Gateway Of Hope|5787 Langley Bypass, Langley|Langley|P|O X|
-0|19:30|SOBER ON SUNDAY (S.O.S.)|United Churches Of Langley|21562 Old Yale Rd, Langley|Langley|P|D O X|
-1|09:00|SPIRITUAL REMEDY TO START YOUR DAY|Online only|Langley|Langley|O|B O X ONL|7956357392
-1234|12:00|THE WAY OUT GROUP|Alano Club|20473 Douglas Cres, Langley|Langley|P|O X|
-1|12:00|ONE DAY AT A TIME|CLA (entrance at front of church)|21277 56 Ave, Langley|Langley|P|O|
-135|12:00|ONE DAY AT A TIME|Online only|Langley|Langley|O|O ONL|2224085216
-1|17:30|BUSH MEETING|Alano Club|20473 Douglas Cres, Langley|Langley|P|O X|
-1|19:00|12 and 12 DISCUSSION|Alano Club|20473 Douglas Cres, Langley|Langley|P|C X|
-1|19:00|NO NAME GROUP|Lions Hall|23022 88 Ave, Langley Twp|Fort Langley|P|O X|
-1|19:00|Big Book Study Keystone Group|Meeting location|20355 Douglas Cres, Langley|Langley|P|O|
-1|19:30|MONDAY NIGHT UNITED GROUP|Online only|Langley|Langley|O|O ONL|2859099992
-1|20:00|MIDVALLEY GROUP|Surrey Pentecostal Assembly|16870 80 Ave, Surrey|Surrey|H|O X ONL|590664334
-24|09:00|SPIRITUAL REMEDY TO START YOUR DAY|Online only|Langley|Langley|O|B ONL|7956357392
-2|17:30|THERE IS A SOLUTION|Alano Club|20473 Douglas Cres, Langley|Langley|P|D O X|
+0|09:00|Women's AA Book Discussion|Online only|Langley|Langley|O|C W|966193796
+0|10:30|MANY PATHS - SECULAR MTG|Alano Club|20473 Douglas Cres, Langley|Langley|P||
+0|11:00|1948 HOME GROUP|Alano Club of Chilliwack|46035 Victoria Ave, Chilliwack|Chilliwack|P||
+0|12:30|VALLEY NOON GROUP STEP MEETING|Meeting location|31250 King Rd, Abbotsford|Abbotsford|P|ST|
+0|15:00|PRINCIPLE BEFORE PERSONALITY (KID FRIENDLY)|Ruth and Naomi's Family Centre|46129 Princess Ave, Chilliwack|Chilliwack|P|B|
+0|19:00|CLOVERDALE CROWD|Cloverdale United Church|17575 58A Ave, Surrey|Cloverdale|P||
+0|19:00|CORRECTIONS CORNER - Last Sunday of every month|Online only|Langley|Langley|O|SP|99150323288
+0|19:00|SUNDAY NIGHT PROMISES|Abbotsford Seniors Association|2631 Cyril St, Abbotsford|Abbotsford|P||
+0|19:30|GATEWAY TO HOPE|Salvation Army Gateway Of Hope|5787 Langley Bypass, Langley|Langley|P||
+0|19:30|HAPPY HOUR GROUP|Mission Alano Club|33229 N Railway Ave, Mission|Mission|P||
+0|19:30|SOBER ON SUNDAY (S.O.S.)|United Churches Of Langley|21562 Old Yale Rd, Langley|Langley|P||
+0|19:30|SUNDAY CANDLELIGHT|Alano Club of Chilliwack|46035 Victoria Ave, Chilliwack|Chilliwack|P||
+0123456|20:00|GRATEFUL 8|Online only|Abbotsford|Abbotsford|O||5909729769
+12345|12:00|SERENITY HOUR GROUP|Mission Alano Club|33229 N Railway Ave, Mission|Mission|P||
+1234|12:00|THE WAY OUT GROUP|Alano Club|20473 Douglas Cres, Langley|Langley|P||
+1236|12:00|NEW NOONER MEETING|Alano Club of Chilliwack|46035 Victoria Ave, Chilliwack|Chilliwack|P||
+135|12:00|ONE DAY AT A TIME|Online only|Langley|Langley|O||2224085216
+1|09:00|SPIRITUAL REMEDY TO START YOUR DAY|Online only|Langley|Langley|O|B|7956357392
+1|17:30|BUSH MEETING|Alano Club|20473 Douglas Cres, Langley|Langley|P||
+1|19:00|12 and 12 DISCUSSION|Alano Club|20473 Douglas Cres, Langley|Langley|P|C|
+1|19:00|Big Book Study Keystone Group|Meeting location|20355 Douglas Cres, Langley|Langley|P||
+1|19:00|MONDAY NIGHT BACK TO BASICS|Meeting location|2950 Blue Jay St, Abbotsford|Abbotsford|P||
+1|19:00|MONDAY NIGHT BEGINNERS|Alano Club|2584 Cyril St, Abbotsford|Abbotsford|P||
+1|19:00|NO NAME GROUP|Lions Hall|23022 88 Ave, Langley Twp|Fort Langley|P||
+1|19:00|OLD FASHION GROUP|Mission Friendship Centre|33150 1st Ave, Mission|Mission|P||
+1|19:00|OUR PRIMARY PURPOSE|Sardis Community Church|45625 S Sumas Rd, Chilliwack|Chilliwack|P||
+1|19:00|TAMAHI MEN'S CLOSED MEETING|Sardis Fellowship Baptist Church|45187 Wells Rd, Chilliwack|Chilliwack|P|C M|
+1|19:30|HARMONY GROUP|Meeting location|9460 Charles St, Chilliwack|Chilliwack|P||
+1|19:30|MONDAY NIGHT UNITED GROUP|Online only|Langley|Langley|O||2859099992
+1|20:00|AA-ACTION BIG BOOK STUDY|Meeting location|33911 Hazelwood Ave, Abbotsford|Abbotsford|P|C|
+1|20:00|ABBOTSFORD SOBER PUNJABI GROUP|Ground Level Mennonite Church|31216 King Rd, Abbotsford|Abbotsford|P|C PUN|
+1|20:00|MIDVALLEY GROUP|Surrey Pentecostal Assembly|16870 80 Ave, Surrey|Surrey|H||590664334
+24|09:00|SPIRITUAL REMEDY TO START YOUR DAY|Online only|Langley|Langley|O|B|7956357392
+2|12:00|THE CHEAM MOUNTAIN GROUP|All-Saints Anglican Church|6904 Lougheed Hwy, Agassiz|Agassiz|P|B ST|
+2|14:00|12 STEP GROUP|Abbotsford Seniors Association|2631 Cyril St, Abbotsford|Abbotsford|P|ST|
+2|17:30|THERE IS A SOLUTION|Alano Club|20473 Douglas Cres, Langley|Langley|P||
+2|18:00|11TH STEP MEDITATION|Alano Club|2584 Cyril St, Abbotsford|Abbotsford|P||
+2|18:00|EXTRAVAGANT PROMISES|Alano Club of Chilliwack|46035 Victoria Ave, Chilliwack|Chilliwack|P|LGBTQ|
+2|19:00|CULTUS LAKE GROUP|Cultus Lake Community Hall|4220 Columbia Valley Rd, Cultus Lake|Chilliwack|P||
+2|19:00|LEQ'A:MEL DEROCHE OLD SCHOOL|Leq'a:mel Deroche Old School|Leq'a:mel Way, Deroche|Deroche|P||
+2|19:00|NEW BEGINNERS GROUP|Meeting location|9210 Williams St, Chilliwack|Chilliwack|P||
+2|19:30|CLEARBROOK PODIUM MEETING|Alano Club|2584 Cyril St, Abbotsford|Abbotsford|P||
+2|19:30|Freedom Group|Christ the Redeemer Church|16628 Old McLellan Rd, Surrey|Surrey|P||
+2|19:30|LADIES HAPPY HOUR|Trinity Memorial United Church|33737 George Ferguson Way, Abbotsford|Abbotsford|H|W|71584586102
+2|19:30|MAKING CHANGES|Port Kells Church|19131 88 Ave, Surrey|Surrey|P||
 2|19:30|PHOENIX MENS 12 AND 12|Alano Club|20473 Douglas Cres, Langley|Langley|P|C M|
-2|19:30|Freedom Group|Christ the Redeemer Church|16628 Old McLellan Rd, Surrey|Surrey|P|O|
-2|19:30|MAKING CHANGES|Port Kells Church|19131 88 Ave, Surrey|Surrey|P|O|
-2|20:00|TUESDAY LADIES READ THE BOOK|Online only|Langley|Langley|O|C W ONL|383660385
-35|09:00|SPIRITUAL REMEDY TO START YOUR DAY|Online only|Langley|Langley|O|B O ONL|7956357392
-3|16:30|CIRCLE OF STONES|Douglas Park Dome|5403 206 St, Langley|Langley|P|O|
-3|17:30|THANKS FOR MY SOBRIETY|Alano Club|20473 Douglas Cres, Langley|Langley|P|O X|
-3|18:15|BEGINNERS MEETING (Newcomers Group)|Westwinds Community Church|6331 176 St, Surrey|Cloverdale|P|O|
-3|19:00|BEYOND BELIEF NEWCOMERS|Alano Club|20473 Douglas Cres, Langley|Langley|P|O X|
-3|19:30|Redemption Road|Christ the Redeemer Church|16628 Old McLellan Rd, Surrey|Surrey|P|O|
-3|19:30|NEWCOMERS GROUP|Westwinds Community Church|6331 176 St, Surrey|Cloverdale|P|LGBTQ O|
-3|20:00|DISCOVERY GROUP|United Churches Of Langley|21562 Old Yale Rd, Langley|Langley|P|O|
-4|17:30|Primary Purpose|Alano Club|20473 Douglas Cres, Langley|Langley|P|D X|
-4|18:00|CLOVERDALE LADIES BIG BOOK|Cloverdale United Church|17575 58A Ave, Surrey|Cloverdale|H|B W ONL|86854589183
-4|19:00|ALDERGROVE GROUP|St. Dunstan Church|3025 264 St, Langley Twp|Aldergrove|P|O X|
-4|19:30|AS BILL SEES IT (Remote Communities)|Online only|Langley|Langley|O|C X ONL|498814817
-4|20:00|LANGLEY PHOENIX MEN'S GROUP|Alano Club|20473 Douglas Cres, Langley|Langley|P|C M X|
-4|20:00|CARRY THE MESSAGE|Online only|Langley|Langley|O|O ONL|86500623705
-4|20:00|PUNJABI SPEAKING MEETING|Sonrise Church|5588 188 St, Surrey|Cloverdale|P|O PUN X|
-4|20:00|LUCKY PEOPLE|St. Andrew's Anglican Church|20955 Old Yale Rd, Langley|Langley|P|O X|
-5|12:00|COME-FORT GROUP|Lions Hall|23022 88 Ave, Langley Twp|Fort Langley|H|O X ONL|8998261571
-5|17:30|HOW IT WORKS|Alano Club|20473 Douglas Cres, Langley|Langley|P|O X|
-5|19:00|FRIDAY NIGHT PARKING LOT MEETING|Cloverdale United Church|17575 58A Ave, Surrey|Cloverdale|P|O|
-5|19:00|SOBERIDER|United Churches Of Langley|21562 Old Yale Rd, Langley|Langley|P|O|
-5|19:30|RULE 62|Alano Club|20473 Douglas Cres, Langley|Langley|P|O X|
-5|19:30|DEALING WITH ALCOHOL|Christ the Redeemer Church|16628 Old McLellan Rd, Surrey|Surrey|H|O ONL|82548350438
-6|08:00|Grateful at 8|Alano Club|20473 Douglas Cres, Langley|Langley|P|O|
-6|08:45|MORE ABOUT ALCOHOLISM|St. Andrew's Anglican Church|20955 Old Yale Rd, Langley|Langley|P|O|
-6|16:00|FREEDOM GROUP|Christ the Redeemer Church|16628 Old McLellan Rd, Surrey|Surrey|H|O ONL|85406680019
-6|17:30|YOUNG GUNS|Alano Club|20473 Douglas Cres, Langley|Langley|P|O X|
-6|19:00|SOBER SATURDAY - 3rd Saturday of every month|Private home (indoors)|3126 184 St, Surrey|South Surrey|P|O X|
-6|19:00|Unity Speaker Meeting|Online only|Surrey|South Surrey|O|ONL|5640545402
-6|19:00|SATURDAY NIGHT REPRIEVE|United Churches Of Langley|21562 Old Yale Rd, Langley|Langley|P|O|
-6|19:30|SATURDAY NIGHT COFFEE|Cloverdale Recreation Centre|6188 176 St, Surrey|Cloverdale|H|O X ONL|588260031
-6|23:00|Langley Late Night|Alano Club|20473 Douglas Cres, Langley|Langley|P|LGBTQ O|
+2|20:00|POWER OF FELLOWSHIP GROUP|Mission Alano Club|33229 N Railway Ave, Mission|Mission|P||
+2|20:00|TUESDAY LADIES READ THE BOOK|Online only|Langley|Langley|O|C W|383660385
+35|09:00|SPIRITUAL REMEDY TO START YOUR DAY|Online only|Langley|Langley|O|B|7956357392
+3|08:00|BREAKFAST CLUB GROUP|Meeting location|33550 South Fraser Way, Abbotsford|Abbotsford|P|B|
+3|12:00|WOMEN OF PROMISE (Women Only)|Meeting location|2575 Gladwin Rd, Abbotsford|Abbotsford|P|W|
+3|17:30|THANKS FOR MY SOBRIETY|Alano Club|20473 Douglas Cres, Langley|Langley|P||
+3|18:15|BEGINNERS MEETING (Newcomers Group)|Westwinds Community Church|6331 176 St, Surrey|Cloverdale|P|BE|
+3|18:30|IN THE BOOK|Ruth and Naomi's Family Centre|46129 Princess Ave, Chilliwack|Chilliwack|P|B C|
+3|19:00|BEYOND BELIEF NEWCOMERS|Alano Club|20473 Douglas Cres, Langley|Langley|P||
+3|19:30|NEWCOMERS GROUP|Westwinds Community Church|6331 176 St, Surrey|Cloverdale|P|LGBTQ BE|
+3|19:30|Redemption Road|Christ the Redeemer Church|16628 Old McLellan Rd, Surrey|Surrey|P||
+3|20:00|DISCOVERY GROUP|United Churches Of Langley|21562 Old Yale Rd, Langley|Langley|P||
+3|20:00|RED ROAD GROUP|Sumas First Nation Administration Building|2788 Sumas Mountain Rd, Abbotsford|Abbotsford|P||
+3|20:00|ROSEDALE|United Church Hall|51351 Yale Rd, Rosedale|Rosedale|P||
+3|20:00|SARDIS CLOSED STEPS AND TRADITIONS|Meeting location|7258 Vedder Rd, Chilliwack|Chilliwack|P|C ST|
+3|20:00|WEDNESDAY NIGHT DISCUSSION|Meeting location|2029 Ware St, Abbotsford|Abbotsford|P||
+4|10:00|GRATEFUL FOR TODAY|Alano Club of Chilliwack|46035 Victoria Ave, Chilliwack|Chilliwack|P||
+4|12:00|DUNGEON MEN'S CLOSED GROUP|Alano Club of Chilliwack|46035 Victoria Ave, Chilliwack|Chilliwack|P|C M|
+4|12:00|NEW NOONER MEETING: LADIES' CLOSED|Alano Club of Chilliwack|46035 Victoria Ave, Chilliwack|Chilliwack|P|C W|
+4|17:30|Primary Purpose|Alano Club|20473 Douglas Cres, Langley|Langley|P||
+4|18:00|CLOVERDALE LADIES BIG BOOK|Cloverdale United Church|17575 58A Ave, Surrey|Cloverdale|H|B W|86854589183
+4|18:30|RECOVERY STREET (HOSPITAL MEETING)|Chilliwack General Hospital Cafeteria Room|45600 Menholm Rd, Chilliwack|Chilliwack|P||
+4|18:30|THURSDAY NIGHT BIG BOOK|Ruth and Naomi's Family Centre|46129 Princess Ave, Chilliwack|Chilliwack|P|B|
+4|19:00|ALDERGROVE GROUP|St. Dunstan Church|3025 264 St, Langley Twp|Aldergrove|P||
+4|19:00|MATSQUI VILLAGE GROUP|Matsqui Community Hall|5783 Wallace St, Abbotsford|Abbotsford|P||
+4|19:30|AS BILL SEES IT (Remote Communities)|Online only|Langley|Langley|O|C|498814817
+4|19:30|LEGO|Salvation Army Cafe|34081 Gladys Ave, Abbotsford|Abbotsford|P||
+4|19:30|SISTERS IN SERENITY|St. Thomas Anglican Church Hall|46048 Gore Ave, Chilliwack|Chilliwack|P|C W|
+4|20:00|AGASSIZ LIONS DEN|Meeting location|6800 Pioneer Ave, Agassiz|Agassiz|P||
+4|20:00|CARRY THE MESSAGE|Online only|Langley|Langley|O||86500623705
+4|20:00|LANGLEY PHOENIX MEN'S GROUP|Alano Club|20473 Douglas Cres, Langley|Langley|P|C M|
+4|20:00|LUCKY PEOPLE|St. Andrew's Anglican Church|20955 Old Yale Rd, Langley|Langley|P||
+4|20:00|PUNJABI SPEAKING MEETING|Sonrise Church|5588 188 St, Surrey|Cloverdale|P|PUN|
+4|20:00|THURSDAY BIG BOOK|Mission Alano Club|33229 N Railway Ave, Mission|Mission|P|B|
+5|12:00|COME-FORT GROUP|Lions Hall|23022 88 Ave, Langley Twp|Fort Langley|H||8998261571
+5|12:00|NEW NOONER MEETING: DISCUSSION GROUP|Alano Club of Chilliwack|46035 Victoria Ave, Chilliwack|Chilliwack|P||
+5|17:30|HOW IT WORKS|Alano Club|20473 Douglas Cres, Langley|Langley|P||
+5|19:00|A FEW GOOD MEN|Second Stage Housing|7755 Grand St, Mission|Mission|P|M|
+5|19:00|FRIDAY NIGHT PARKING LOT MEETING|Cloverdale United Church|17575 58A Ave, Surrey|Cloverdale|P||
+5|19:00|SOBERIDER|United Churches Of Langley|21562 Old Yale Rd, Langley|Langley|P||
+5|19:30|DEALING WITH ALCOHOL|Christ the Redeemer Church|16628 Old McLellan Rd, Surrey|Surrey|H||82548350438
+5|19:30|FRIDAY GRAPEVINE GROUP|Alano Club of Chilliwack|46035 Victoria Ave, Chilliwack|Chilliwack|P||
+5|19:30|HOSPITAL GROUP|Mission Alano Club|33229 N Railway Ave, Mission|Mission|P||
+5|19:30|RULE 62|Alano Club|20473 Douglas Cres, Langley|Langley|P||
+5|20:00|FRIDAY NITE BIG BOOK STUDY|Trinity Memorial United Church|33737 George Ferguson Way, Abbotsford|Abbotsford|P|B|
+5|21:00|FRIDAY NIGHT PODIUM GROUP|Mount Shannon United Church|46875 Yale Rd, Chilliwack|Chilliwack|P||
+6|08:00|Grateful at 8|Alano Club|20473 Douglas Cres, Langley|Langley|P||
+6|08:45|MORE ABOUT ALCOHOLISM|St. Andrew's Anglican Church|20955 Old Yale Rd, Langley|Langley|P||
+6|16:00|FREEDOM GROUP|Christ the Redeemer Church|16628 Old McLellan Rd, Surrey|Surrey|H||85406680019
+6|17:30|YOUNG GUNS|Alano Club|20473 Douglas Cres, Langley|Langley|P||
+6|19:00|SATURDAY NIGHT ACTION|Cedar Valley Church|32860 Cherry Ave, Mission|Mission|P||
+6|19:00|SATURDAY NIGHT REPRIEVE|United Churches Of Langley|21562 Old Yale Rd, Langley|Langley|P||
+6|19:00|SOBER SATURDAY - 3rd Saturday of every month|Private home (indoors)|3126 184 St, Surrey|South Surrey|P||
+6|19:00|Unity Speaker Meeting|Online only|South Surrey|South Surrey|O||5640545402
+6|19:30|SATURDAY NIGHT COFFEE|Cloverdale Recreation Centre|6188 176 St, Surrey|Cloverdale|H||588260031
+6|19:30|SATURDAY NITE LIVE|Alano Club of Chilliwack|46035 Victoria Ave, Chilliwack|Chilliwack|P||
+6|20:00|ABBOTSFORD SOBER PUNJABI GROUP|Ground Level Mennonite Church|31216 King Rd, Abbotsford|Abbotsford|P|PUN|
+6|23:00|Langley Late Night|Alano Club|20473 Douglas Cres, Langley|Langley|P|LGBTQ|
+`});
+
+</script>
+<script>
+// Narcotics Anonymous BC Region (bcrna.ca, BMLT feed), pulled 7 Nov 2026. Lower Mainland and Fraser Valley.
+// Hope Fiends and Punjabi NA at EDIC live in the EDIC source.
+// Row: days | start | end | name | venue | address | city | P/H/O | type codes | zoom | note
+addSource({
+  id:"na-bc", name:"Narcotics Anonymous BC", updated:"7 Nov 2026", link:"https://bcrna.ca/meeting/",
+  phone:"1-855-444-2262", fellowship:"NA", format:"gen",
+  note:"NA BC Region list. The helpline can confirm a meeting before you go.",
+  rows:`
+0123456|12:00|13:00|100 Block Rock||144 E Hastings St|Vancouver|P|||
+01236|12:15|13:15|New Attitudes Group|Vancouver Recovery Club|2775 Sophia St|Vancouver|P|O||
+0|08:00|09:00|Suicide Solution Group|Freedom Recovery House|13765 105 Ave|Surrey|P|O||
+0|10:00|11:00|Readings, Rainbows and Unicorns Group|Sunset Towers|1169 Jepson Young Lane|Vancouver|H|O|88027069550|Community Room, basement level
+0|10:15|11:15|Spiritual Solutions Group||#411-777 Columbia St|New Westminster|P|O||
+0|11:00|12:00|Just For Today|Online only||Vancouver|O|O|570330868|
+0|12:15|13:15|Staying Clean at 12:15|Online only||Vancouver|O||85499134452|Passcode: NA1215
+0|17:00|18:00|Marrow in Yarrow Group|Yarrow Community Hall|4670 Community St|Chilliwack|P|O||Small conference room
+0|17:00|18:15|Devious Frightened Loners|Vancouver Recovery Club|2775 Sophia St|Vancouver|P|O||
+0|17:00|18:15|Online Devious Frightened Loners|Online only||Vancouver|O|O|3030140307|Password: Recovery
+0|18:00|19:30|Sunday Night On The Steps Group|Lions Club|12479 Harris Rd|Pitt Meadows|P|O||
+0|19:00|20:00|From The Heart Group|St. Paul's Presbyterian Church|8469 Cedar St|Mission|P|O||Lounge
+0|19:00|20:00|Reaching Out in Recovery|Trinity Church|2211 Prairie Ave|Port Coquitlam|P|O||
+0|19:00|20:30|Farsi Burnaby Meeting|St. Stephen the Martyr Anglican Church|9887 Cameron St|Burnaby|P|O||
+0|19:00|20:30|Our Purpose Group|First Presbyterian Church|335 7th St|New Westminster|P|O||
+0|19:00|20:30|Resurrection|Harmsworth Hall|7170 232 St|Langley|P|O||
+0|19:30|20:30|Powerless In Pitt Group|Pitt Meadows Heritage Church Hall|12109 Harris Rd|Pitt Meadows|P|O||
+0|19:30|20:30|Taking Care Of Business Group|Holy Trinity Cathedral|514 Carnarvon St|New Westminster|P|O||
+0|19:30|20:45|New Directions|St. Clement's Anglican Church|3400 Institute Rd|North Vancouver|P|O||Entrance at the back of the church
+0|19:30|21:00|Addicts With New Hope Group|Pacific Spirit United Church|2195 W 45th Ave|Vancouver|P|C||Downstairs, main entrance
+0|19:30|21:00|Clean Slate Group|Peace Lutheran Church|2029 Ware St|Abbotsford|H|O|9879673919|Basement · Password: clean649
+123456|08:00|09:30|AMNA|St. Barnabas Church|1002 5th Ave|New Westminster|H|O|5215691208|
+123456|12:00|13:00|New West Nooners Group|Olivet Baptist Church|613 Queens Ave|New Westminster|P|O||
+12|12:15|13:15|Staying Clean at 12:15|Online only||Vancouver|O||85499134452|Passcode: NA1215
+1|18:30|19:30|Attitude Of Gratitude Group|Trinity United Church|2211 Prairie Ave|Port Coquitlam|P|O||
+1|18:30|19:30|The Exchange Group|Carnegie Centre|401 Main St|Vancouver|P|||3rd floor classroom
+1|19:00|20:00|Higher Peace|PCRS|45921 Hocking Ave|Chilliwack|P|||Board room
+1|19:00|20:00|Never Alone Beginner's Meeting|North Shore Alano Club|176 E 2nd St|North Vancouver|H|O BE|9310987730|Room 1
+1|19:00|20:00|Raw Recovery||529 Queens Ave|New Westminster|P|||
+1|19:00|20:15|A New Beginning||33129 N Railway Ave|Mission|H|O|580217114|
+1|19:00|20:15|Fan the Flame||5787 Langley Bypass|Langley|P|O||Front door, up the elevator
+1|19:00|20:30|Cloverdale Group|Cloverdale United Church|17575 58A Ave|Cloverdale|P|O||
+1|19:00|20:30|Pass It On Group|Grace Church|2087 McMillan Rd|Abbotsford|P|O||
+1|19:30|20:30|Clean Freaks Group|St. Paul's Hospital|1081 Burrard St|Vancouver|P|O||Providence building, level 1, conference room 6
+1|19:30|20:30|Courage To Change|One Way Club|22272 North Ave|Maple Ridge|P|O||
+1|19:30|20:30|Pride In Recovery|Holy Trinity Cathedral|514 Carnarvon St|New Westminster|P|O LGBTQ||
+1|19:30|20:30|Starting Fresh Group|St. Alban's Church|7717 19th Ave|Burnaby|P|O||
+1|19:30|20:30|Talking Heads Group||7895 Canada Way|Burnaby|H|O|519672164|Online is listen-only
+1|19:30|21:00|New Beginnings Group|Church of God|10011 No 5 Rd|Richmond|P|O||At Williams Rd
+1|19:30|21:00|Peardonville Group||3747 Lindsay St|Abbotsford|P|C W||
+2|18:00|19:00|Coming Home|Cedar Valley Church|32860 Cherry Ave|Mission|P|O||Classroom left of the main church
+2|18:30|19:30|Rage Against The Disease Group|St. Barnabas Church|1002 5th Ave|New Westminster|P|O||
+2|19:00|20:00|Moody Tuesdays|Holy Trinity Cathedral|514 Carnarvon St|New Westminster|P|O||Basement
+2|19:00|20:00|North Burnaby Addicts||5050 E Hastings St|Burnaby|P|O||
+2|19:00|20:15|Freedom From Active Addiction Group|St. Andrew's Anglican Church|20995 Old Yale Rd|Langley|P|O||
+2|19:00|21:00|Step Up Group|Vancouver Recovery Club|2775 Sophia St|Vancouver|P|||
+2|19:15|20:15|Getting It Together Group||2601 Spuraway Ave|Coquitlam|P|O||Basement, old building
+2|19:30|20:30|Straight Goods|Hammond Community Centre|20601 Westfield Ave|Maple Ridge|P|O||
+2|19:30|20:30|The Way Home|North Lonsdale United Church|3380 Lonsdale Ave|North Vancouver|P|||Temporary location
+2|19:30|20:30|Tuesday Night Fireside Group|Christ the King Lutheran Church|13388 104 Ave|Surrey|P|O||
+2|19:30|20:45|Step by Step||9460 Charles St|Chilliwack|P|O||
+2|19:30|21:00|Growing Circle Group|Native Friendship Centre|1607 E Hastings St|Vancouver|P|O||Chief Simon Baker Room
+2|19:30|21:00|New Way To Fly Group|Little House|5061 12 Ave|Delta|P|O||
+2|19:30|21:00|Solution Speakers Group|Church on Five|10200 No 5 Rd|Richmond|P|O||Back room
+34|12:15|13:15|Staying Clean at 12:15|Online only||Vancouver|O||85499134452|Passcode: NA1215
+3|18:00|19:00|Clean Living Group||472 E 8th Ave|New Westminster|P|O||Small building behind the church
+3|19:00|20:00|Babes supporting Babes|Online only||North Vancouver|O|W|92508728397|Passcode: 457339
+3|19:00|20:00|It's Up To Us Group|St. Barnabas Church|1010 5th Ave|New Westminster|P|O||
+3|19:00|20:00|Never Alone Women's Meeting|St. John's Anglican Church|220 8th St W|North Vancouver|P|W||
+3|19:00|20:00|Serenity in the Suburbs|Lions Gate Hospital|231 E 15th St|North Vancouver|P|C M||Evergreen Room
+3|19:00|20:00|Standing Tall|Albion Community Centre|24165 104 Ave|Maple Ridge|P|O||Not on stat holidays
+3|19:00|20:00|Stepping Free|St. Paul's Presbyterian Church|8469 Cedar St|Mission|P|||
+3|19:00|20:00|Walk On|Roundhouse Community Centre|181 Roundhouse Mews|Vancouver|P|O||Not on stat holidays
+3|19:00|20:15|Changing Ways Group|Southside Community Church|12642 100 Ave|Surrey|P|O||
+3|19:00|20:15|Not Without Surrender Group|St. Andrew's Anglican Church|20955 Old Yale Rd|Langley|P|O||
+3|19:00|20:20|Uptown Recovery Group|Alano Club of Chilliwack|46035 Victoria Ave|Chilliwack|P|O||
+3|19:00|20:30|Hopefiends Group|Collins Hall|1120 Miller Rd|Bowen Island|P|O||
+3|19:00|20:30|New Way to Live Group|Edmonds Resource Centre|7355 Canada Way|Burnaby|P|O||Room 208
+3|19:30|20:30|Clean And Crazy Group|Trinity Lutheran Church|7100 Granville Ave|Richmond|P|C||
+3|19:30|20:30|Eye Of The Storm Group|Salvation Army Harbour Light|119 E Cordova St|Vancouver|P|O||
+3|19:30|20:30|More Will Be Revealed|Alano Club|2584 Cyril St|Abbotsford|P|O||
+3|19:30|20:30|Recovery in the Meadows|Lions Hall|12479 Harris Rd|Pitt Meadows|P|O||
+3|19:30|20:30|Third Tradition Group|Vancouver Recovery Club|2775 Sophia St|Vancouver|P|O||Main meeting room
+3|19:30|20:45|HOW-It Works Group|Eagle Ridge United Church|2813 Glen Dr|Coquitlam|P|O||
+3|19:30|21:00|Recovery; Our First Priority|St. Stephen the Martyr Anglican Church|9887 Cameron St|Burnaby|P|O||
+45|12:15|13:15|New Attitudes Group|Vancouver Recovery Club|2775 Sophia St|Vancouver|P|O||
+4|19:00|20:00|Mission Possible Group|All Saints Monastery|37323 Hawkins Pickle Rd|Mission|P|O||
+4|19:00|20:00|Next Right Thing Group|Cloverdale United Church|17575 58A Ave|Cloverdale|P|O||
+4|19:00|20:00|Women in Recovery Group|Online only||Vancouver|O|C W||Email womeninrecovery@vascna.ca for the Zoom link
+4|19:30|20:30|H.A.L.T|Grandview Church|1803 E 1st Ave|Vancouver|P|O||Step 10 topic
+4|19:30|20:30|Never Ending Journey Group|Crossroads United Church|7655 120 St|North Delta|P|O||
+4|19:30|20:30|New Pair of Shoes||1655 Barclay St|Vancouver|P|O||Garden room, gate on the left side
+4|19:30|20:30|Promise Of Freedom Group|Lions Gate Hospital|231 E 15th St|North Vancouver|P|O||Evergreen Room
+4|19:30|20:30|South Burnaby Addicts Group||7591 Gray Ave|Burnaby|P|O||Lane entrance
+4|19:30|20:30|There comes a time||11858 216 St|Maple Ridge|P|O||
+4|19:30|20:45|New Level Of Innocence|Place de Maillardville|1200 Cartier Ave|Coquitlam|P|O||Upstairs room
+4|19:30|21:00|Dream Catchers Group|Online only||Abbotsford|O|O|9879673919|Password: clean649
+4|19:30|21:00|Straight Up Group||5545 Ladner Trunk Rd|Delta|P|O||Back of the daycare
+4|20:00|21:30|New West Winners Group||207 6th St|New Westminster|H|O|7596873070|
+5|12:00|13:00|The Deroche Meeting|Band Office|10220 Deroche Rd N|Deroche|P|O||
+5|12:15|13:15|Staying Clean at 12:15|Online only||Vancouver|O|O|85499134452|Passcode: NA1215
+5|18:30|19:45|New Ashtreys||450 E Hastings St|Vancouver|P|||
+5|19:00|20:00|Never Alone Group|Delbrook Community Recreation Centre|851 W Queens Rd|North Vancouver|H|O|9310987730|
+5|19:00|20:00|Power Hour Group|Cedar Valley Church|32860 Cherry Ave|Mission|P|O||
+5|19:00|20:00|Primary Purpose|Lions Club|12479 Harris Rd|Pitt Meadows|P|O||
+5|19:00|20:00|Queens Addicts|Holy Trinity Cathedral|514 Carnarvon St|New Westminster|P|O||Basement
+5|19:00|20:00|Reconstruction Group|Douglas College|700 Royal Ave|New Westminster|H|O|869040925|Room 2203
+5|19:00|20:15|Lessons From Rock Bottom|Gathering Community Church|2285 Clearbrook Rd|Abbotsford|P|O||
+5|19:15|20:30|Delayed Gratification|Place de Maillardville|1200 Cartier Ave|Coquitlam|P|O||Downstairs room
+5|19:30|20:45|Serenity By The Sea|Gracepoint Community Church|3487 King George Blvd|South Surrey|P|O||Front door and right
+5|19:30|20:45|We Are Deserving|Ladner United Church|4960 48 Ave|Ladner|P|O||Knoblauch Room, main entrance
+5|19:30|21:00|No Shit Group|South Langley Church|20098 22 Ave|Langley|P|O||
+5|19:30|21:00|Return To Grace Group|Salvation Army Harbour Light|119 E Cordova St|Vancouver|P|O||
+5|19:30|21:00|Simply Surrender Group|Carman United Church|7258 Vedder Rd|Chilliwack|P|O||
+5|19:45|21:15|Just For Today Group|South Arm Community Centre|8880 Williams Rd|Richmond|P|C||
+5|21:00|22:00|The Friday Night Fight!|St. Dunstan's Anglican Church|3025 264 St|Aldergrove|P|O||
+6|07:45|09:15|Good Day To Be Clean Group|Langley Alano Club|20473 Douglas Cres|Langley|P|O||Back of the building
+6|10:00|11:15|We Do Recover|Conextion Station|33139 Railway Ave|Mission|P|O||
+6|11:00|12:00|Breakfast Club|One Way Club|22270 North Ave|Maple Ridge|P|O||
+6|12:15|13:15|Staying Clean at 12:15|Online only||Vancouver|O||85499134452|
+6|12:30|14:00|Lust For Life Group|The Kettle Society Health Clinic|1725 Venables St|Vancouver|H|O|86701371553|Second floor · Password: 868961
+6|13:30|14:30|Get Lit|Three Bridges Community Health Centre|1128 Hornby St|Vancouver|P|O||
+6|14:00|15:00|Addicts Kicking Addiction (AKA)|Online only||New Westminster|O|O|5496037502|
+6|17:30|18:30|New West Addicts|Hobbit Hole|740 Carnarvon St|New Westminster|P|O||Entrance on Alexander St
+6|18:00|19:00|Face The World 2Gether|Chilliwack General Hospital|45600 Menholm Rd|Chilliwack|P|||Bradley Centre doors on Hodgins Ave, old cafeteria
+6|18:00|19:15|Finally Connected NA|QMUNITY|1170 Bute St|Vancouver|P|O LGBTQ||
+6|19:00|20:00|Almost Live Group|Holy Trinity Cathedral|514 Carnarvon St|New Westminster|P|O||
+6|19:00|20:00|Miracles Do Happen Group|Mission Alano Club|33229 N Railway Ave|Mission|P|O||
+6|19:00|20:00|New Desires Group|City Centre Church|13082 104 Ave|Surrey|P|O||
+6|19:00|20:00|Spiritual Principle a Day|Holy Trinity Cathedral|514 Carnarvon St|New Westminster|P|O||Downstairs
+6|19:30|20:30|Living Clean Group|Pitt Meadows Heritage Church Hall|12109 Harris Rd|Pitt Meadows|P|O|88414611350|
+6|19:30|20:30|The Ties That Bind|Little House Society|5061 12 Ave|Delta|P|O LGBTQ||
+6|19:30|21:00|Alternative Group|Vancouver Recovery Club|2775 Sophia St|Vancouver|P|O||
+6|19:30|21:00|Langley Saturday Night Group|Langley Alano Club|20473 Douglas Cres|Langley|P|O||
+6|19:30|21:00|New Millennium|Trinity Church|33737 George Ferguson Way|Abbotsford|P|O||
+6|19:30|21:00|Unknown Addicts|Pinetree Community Centre|1260 Pinetree Way|Coquitlam|P|O||
+6|20:00|21:00|New Wave|West Vancouver United Church|2062 Esquimalt Ave|West Vancouver|P|O||October to May; Ambleside beach by the totem pole May to September
+6|20:00|21:00|Saturday Night Live Group|Burnaby Fellowship Centre|7638 6th St|Burnaby|H|O|82475338608|
+`});
+
+</script>
+<script>
+// Crystal Meth Anonymous (crystalmeth.org) and Sexaholics Anonymous Metro Vancouver (savancouver.org, list of 9 Sep 2026), pulled 7 Nov 2026.
+// CMA and SA meetings at EDIC live in the EDIC source.
+// Row: days | start | end | fellowship | name | venue | address | city | P/H/O | type codes | zoom | note
+addSource({
+  id:"cma-sa", name:"CMA and SA (Metro Vancouver)", updated:"7 Nov 2026", link:"https://www.savancouver.org/meetings/",
+  format:"gen",
+  note:"SA Zoom logins are handed out by request on savancouver.org. CMA meetings are listed on crystalmeth.org.",
+  rows:`
+5|19:00|20:00|CMA|Ta-Ta Tina 2.0|QMUNITY|1170 Bute St|Vancouver|P|LGBTQ||
+3|19:30|20:30|CMA|Back on Track|The People's Church|14455 104 Ave|Surrey|P|||
+3|19:30|20:30|CMA|Methbusters|QMUNITY|1170 Bute St|Vancouver|P|BE||
+1|19:00|20:30|SA|White Rock|Peninsula United Church, Sunnyside Site|15639 24 Ave, Surrey|White Rock|H|C||Downstairs, white double doors · Zoom login from savancouver.org
+3|19:30|21:00|SA|Abbotsford Men's Meeting|Gladwin Heights United Church|3474 Gladwin Rd|Abbotsford|P|C M||Turquoise double doors at the back, ground level
+4|19:00|20:30|SA|Serenity in the City|Mole Hill Community Housing, Community Centre room|Rear of 1157 Pendrell St|Vancouver|H|C M||Enter from Jepson-Young Lane · Zoom login from savancouver.org
+6|10:30|11:30|SA|New Westminster|The Lookout Housing and Health Society|740 Carnarvon St|New Westminster|P|C||Last side door on the west side; door open until 10:45
+2|19:00|20:00|SA|Tuesday Zoom|Online only||Vancouver|O|C||Login from savancouver.org
+3|19:30|21:00|SA|Wednesday Zoom|Online only||Vancouver|O|C||Login from savancouver.org
+5|19:30|20:30|SA|Friday Zoom|Online only||Vancouver|O|C||Login from savancouver.org
+6|08:00|09:00|SA|Saturday Zoom|Online only||Vancouver|O|C||Login from savancouver.org
+0|19:00|20:00|SA|Sunday Zoom|Online only||Vancouver|O|C||Login from savancouver.org
 `});
 
 </script>
@@ -403,12 +919,12 @@ addSource({
 /* ===== App ===== */
 const CFG=window.BUILD||{title:"Meetings",sub:"",personal:false};
 const DAYS=["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"];
-const AREAS=[["surrey","Surrey"],["near","+ Nearby"],["metro","+ Metro Van"],["bc","All BC"]];
+const AREAS=[["surrey","Surrey"],["near","+ Nearby"],["metro","+ Lower Mainland"],["bc","All BC"]];
 const AREA_RANK={surrey:0,near:1,metro:2,bc:3};
 const REGION_AREA={"Surrey":"surrey","South Surrey":"surrey","Cloverdale":"surrey",
-  "White Rock":"near","Delta":"near","Langley":"near","Fort Langley":"near","New Westminster":"near",
-  "Ladner":"metro","Tsawwassen":"metro","Aldergrove":"metro"};
-const TYPE_LABEL={W:"Women",M:"Men",C:"Closed",PUN:"Punjabi",LGBTQ:"LGBTQ+",B:"Big Book",ST:"Steps",SP:"Speaker"};
+  "White Rock":"near","Delta":"near","North Delta":"near","Ladner":"near","Tsawwassen":"near","Langley":"near","Fort Langley":"near","Aldergrove":"near",
+  "New Westminster":"near","Burnaby":"near","Coquitlam":"near","Port Coquitlam":"near","Port Moody":"near","Richmond":"near"};
+const TYPE_LABEL={W:"Women",M:"Men",C:"Closed",PUN:"Punjabi",LGBTQ:"LGBTQ+",B:"Big Book",ST:"Steps",SP:"Speaker",BE:"Beginners",S:"Spanish",G:"Gay men"};
 const SMALL=new Set(["a","an","and","the","of","to","for","at","in","on","by","or","is","my","your"]);
 const tidy=s=>/[a-z]/.test(s)?s:s.toLowerCase().replace(/\b[\w']+/g,(w,i)=>i&&SMALL.has(w)?w:w[0].toUpperCase()+w.slice(1)).replace(/\bAa\b/g,"AA").replace(/\bEdi\b/g,"EDI").replace(/\b12th\b/i,"12th").replace(/\(S\.o\.s\.\)/,"(S.O.S.)");
 
@@ -426,6 +942,13 @@ function parse(s){
       const tags=c.filter(x=>TYPE_LABEL[x]).map(x=>TYPE_LABEL[x]);
       const where=venue==="Online only"?"Online · "+region:venue+", "+addr;
       out.push({days:d,t,end:"",type:"AA",name:tidy(name),where,addr:venue==="Online only"?"":addr,area:REGION_AREA[region]||"metro",mode,tags,zoom,src:s.id});
+    }else if(s.format==="gen"){
+      const g=s.fellowship?[f[0],f[1],f[2],s.fellowship,...f.slice(3)]:f;
+      const [d,t,end,type,name,venue,addr,city,mode,codes="",zoom="",note=""]=g;
+      const tags=codes.split(" ").filter(x=>TYPE_LABEL[x]).map(x=>TYPE_LABEL[x]);
+      const full=[addr,city].filter(Boolean).join(", ");
+      const where=mode==="O"?"Online · "+city:(venue?venue+", ":"")+full;
+      out.push({days:d,t,end,type,name,where,addr:mode==="O"?"":full,city,area:REGION_AREA[city]||"metro",mode,tags,zoom,note,src:s.id});
     }else{
       const [d,t,end,name,city,addr,area,zoom,pass,note]=f;
       out.push({days:d,t,end,type:s.fellowship,name,where:addr+", "+city,city,area,mode:zoom?"H":"P",zoom,pass,note,src:s.id});
@@ -465,6 +988,8 @@ function links(m){
   const a=[];
   if(m.mode!=="O") a.push(`<a href="${maps(m.addr||m.where)}" target="_blank" rel="noopener">Directions</a>`);
   if(m.zoom) a.push(`<a href="${zoomUrl(m.zoom)}" target="_blank" rel="noopener">Join on Zoom</a>`);
+  const ph=(SOURCES.find(s=>s.id===m.src)||{}).phone;
+  if(ph) a.push(`<a href="${tel(ph)}">Call ${ph}</a>`);
   return a.join("");
 }
 function nextUp(){
@@ -584,6 +1109,14 @@ document.getElementById("addForm").addEventListener("submit",e=>{
   if(!name||!num){toast("Add a name and a number");return}
   added.push({id:"a"+Date.now(),name,num,ok:true});store.set("edic-people-added",added);
   e.target.reset();render();toast("Added "+name);
+});
+document.getElementById("importForm").addEventListener("submit",e=>{
+  e.preventDefault();
+  try{const list=JSON.parse(decodeURIComponent(escape(atob(document.getElementById("importCode").value.trim()))));
+    const have=new Set(added.map(p=>p.num));let n=0;
+    list.forEach(([name,num],i)=>{if(!have.has(num)){added.push({id:"a"+Date.now()+"-"+i,name,num,ok:false});n++}});
+    store.set("edic-people-added",added);e.target.reset();render();toast("Added "+n+" people")}
+  catch(err){toast("That code didn't work. Copy the whole thing and try again")}
 });
 render();
 setInterval(()=>{if(tab==="meetings")renderMeetings()},60000);

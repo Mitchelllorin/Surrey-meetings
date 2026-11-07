@@ -41,6 +41,12 @@
       <button class="btn primary" type="submit">Add</button>
     </form>
     <p class="sub">People you add here are saved on this phone only.</p>
+    <h2>Paste a saved list</h2>
+    <form class="addform" id="importForm">
+      <input id="importCode" placeholder="Paste list code" autocomplete="off">
+      <button class="btn primary" type="submit">Add list</button>
+    </form>
+
   </section>
 
   <section data-view="help" id="view-help" hidden>
@@ -59,12 +65,12 @@ function setPeople(list){PEOPLE=list.map(([name,num],i)=>({id:"p"+i,name,num,ok:
 /* ===== App ===== */
 const CFG=window.BUILD||{title:"Meetings",sub:"",personal:false};
 const DAYS=["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"];
-const AREAS=[["surrey","Surrey"],["near","+ Nearby"],["metro","+ Metro Van"],["bc","All BC"]];
+const AREAS=[["surrey","Surrey"],["near","+ Nearby"],["metro","+ Lower Mainland"],["bc","All BC"]];
 const AREA_RANK={surrey:0,near:1,metro:2,bc:3};
 const REGION_AREA={"Surrey":"surrey","South Surrey":"surrey","Cloverdale":"surrey",
-  "White Rock":"near","Delta":"near","Langley":"near","Fort Langley":"near","New Westminster":"near",
-  "Ladner":"metro","Tsawwassen":"metro","Aldergrove":"metro"};
-const TYPE_LABEL={W:"Women",M:"Men",C:"Closed",PUN:"Punjabi",LGBTQ:"LGBTQ+",B:"Big Book",ST:"Steps",SP:"Speaker"};
+  "White Rock":"near","Delta":"near","North Delta":"near","Ladner":"near","Tsawwassen":"near","Langley":"near","Fort Langley":"near","Aldergrove":"near",
+  "New Westminster":"near","Burnaby":"near","Coquitlam":"near","Port Coquitlam":"near","Port Moody":"near","Richmond":"near"};
+const TYPE_LABEL={W:"Women",M:"Men",C:"Closed",PUN:"Punjabi",LGBTQ:"LGBTQ+",B:"Big Book",ST:"Steps",SP:"Speaker",BE:"Beginners",S:"Spanish",G:"Gay men"};
 const SMALL=new Set(["a","an","and","the","of","to","for","at","in","on","by","or","is","my","your"]);
 const tidy=s=>/[a-z]/.test(s)?s:s.toLowerCase().replace(/\b[\w']+/g,(w,i)=>i&&SMALL.has(w)?w:w[0].toUpperCase()+w.slice(1)).replace(/\bAa\b/g,"AA").replace(/\bEdi\b/g,"EDI").replace(/\b12th\b/i,"12th").replace(/\(S\.o\.s\.\)/,"(S.O.S.)");
 
@@ -82,6 +88,13 @@ function parse(s){
       const tags=c.filter(x=>TYPE_LABEL[x]).map(x=>TYPE_LABEL[x]);
       const where=venue==="Online only"?"Online · "+region:venue+", "+addr;
       out.push({days:d,t,end:"",type:"AA",name:tidy(name),where,addr:venue==="Online only"?"":addr,area:REGION_AREA[region]||"metro",mode,tags,zoom,src:s.id});
+    }else if(s.format==="gen"){
+      const g=s.fellowship?[f[0],f[1],f[2],s.fellowship,...f.slice(3)]:f;
+      const [d,t,end,type,name,venue,addr,city,mode,codes="",zoom="",note=""]=g;
+      const tags=codes.split(" ").filter(x=>TYPE_LABEL[x]).map(x=>TYPE_LABEL[x]);
+      const full=[addr,city].filter(Boolean).join(", ");
+      const where=mode==="O"?"Online · "+city:(venue?venue+", ":"")+full;
+      out.push({days:d,t,end,type,name,where,addr:mode==="O"?"":full,city,area:REGION_AREA[city]||"metro",mode,tags,zoom,note,src:s.id});
     }else{
       const [d,t,end,name,city,addr,area,zoom,pass,note]=f;
       out.push({days:d,t,end,type:s.fellowship,name,where:addr+", "+city,city,area,mode:zoom?"H":"P",zoom,pass,note,src:s.id});
@@ -121,6 +134,8 @@ function links(m){
   const a=[];
   if(m.mode!=="O") a.push(`<a href="${maps(m.addr||m.where)}" target="_blank" rel="noopener">Directions</a>`);
   if(m.zoom) a.push(`<a href="${zoomUrl(m.zoom)}" target="_blank" rel="noopener">Join on Zoom</a>`);
+  const ph=(SOURCES.find(s=>s.id===m.src)||{}).phone;
+  if(ph) a.push(`<a href="${tel(ph)}">Call ${ph}</a>`);
   return a.join("");
 }
 function nextUp(){
@@ -240,6 +255,14 @@ document.getElementById("addForm").addEventListener("submit",e=>{
   if(!name||!num){toast("Add a name and a number");return}
   added.push({id:"a"+Date.now(),name,num,ok:true});store.set("edic-people-added",added);
   e.target.reset();render();toast("Added "+name);
+});
+document.getElementById("importForm").addEventListener("submit",e=>{
+  e.preventDefault();
+  try{const list=JSON.parse(decodeURIComponent(escape(atob(document.getElementById("importCode").value.trim()))));
+    const have=new Set(added.map(p=>p.num));let n=0;
+    list.forEach(([name,num],i)=>{if(!have.has(num)){added.push({id:"a"+Date.now()+"-"+i,name,num,ok:false});n++}});
+    store.set("edic-people-added",added);e.target.reset();render();toast("Added "+n+" people")}
+  catch(err){toast("That code didn't work. Copy the whole thing and try again")}
 });
 render();
 setInterval(()=>{if(tab==="meetings")renderMeetings()},60000);

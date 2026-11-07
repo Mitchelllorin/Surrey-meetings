@@ -1,0 +1,323 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="theme-color" content="#1f5f9e"><style>:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0}[hidden]{display:none!important}</style></head><body>
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="../icon-192.png">
+<link rel="apple-touch-icon" href="../icon-192.png">
+<meta name="description" content="Free and cheap meals in Surrey and across the Lower Mainland">
+<title>Free Meals Lower Mainland</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&family=Atkinson+Hyperlegible:wght@400;700&display=swap">
+<style>
+/* Layout: one column, phone first. "Eat next" card, day strip, distance + who + cost chips, timed list, then any-time list. */
+:root{
+  --bg:#eff0f4; --surface:#ffffff; --ink:#18202e; --muted:#5a6273; --line:#d6d9e2;
+  --accent:#1f5f9e; --accent-ink:#ffffff; --soft:#dde7f3; --warn:#9a5b00; --warnsoft:#f6ead6; --free:#1d6b45; --freesoft:#dcefe4;
+  --display:"Bricolage Grotesque","Segoe UI",system-ui,sans-serif;
+  --body:"Atkinson Hyperlegible","Segoe UI",system-ui,sans-serif;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#10141b; --surface:#19202a; --ink:#e7ebf2; --muted:#98a1b2; --line:#2b3442;
+  --accent:#7fb2ea; --accent-ink:#0b1a2b; --soft:#1f2e42; --warn:#e5a54a; --warnsoft:#33291a; --free:#6fd3a0; --freesoft:#173327; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#10141b; --surface:#19202a; --ink:#e7ebf2; --muted:#98a1b2; --line:#2b3442;
+  --accent:#7fb2ea; --accent-ink:#0b1a2b; --soft:#1f2e42; --warn:#e5a54a; --warnsoft:#33291a; --free:#6fd3a0; --freesoft:#173327; color-scheme:dark}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font-family:var(--body);font-size:16px;line-height:1.45;
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:0 32px}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--bg)}
+.wrap{max-width:560px;margin:0 auto;display:flex;flex-direction:column;gap:16px}
+header{padding-top:20px;display:flex;flex-direction:column;gap:4px}
+h1{font-family:var(--display);font-weight:800;font-size:1.9rem;line-height:1.05;margin:0;text-wrap:balance}
+h2{font-family:var(--display);font-weight:600;font-size:1.15rem;margin:0}
+.sub{color:var(--muted);font-size:.9rem;margin:0}
+button{font-family:var(--body);color:var(--ink)}
+button:focus-visible,a:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+.next{background:var(--accent);color:var(--accent-ink);border-radius:14px;padding:16px 18px;display:flex;flex-direction:column;gap:4px}
+.next .eyebrow{font-size:.75rem;letter-spacing:.08em;text-transform:uppercase;opacity:.85;font-weight:700}
+.next .name{font-family:var(--display);font-weight:600;font-size:1.35rem;line-height:1.15}
+.next .when{font-variant-numeric:tabular-nums}
+.next a{color:var(--accent-ink);font-weight:700}
+.days{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--bg);padding-block:8px;display:grid;grid-template-columns:repeat(7,1fr);gap:4px}
+.days button{min-height:48px;border:1px solid var(--line);background:var(--surface);border-radius:10px;font-weight:700;font-size:.85rem;cursor:pointer;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1px}
+.days button small{font-weight:400;font-size:.65rem;color:var(--muted);font-variant-numeric:tabular-nums}
+.days button[aria-pressed="true"]{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+.days button[aria-pressed="true"] small{color:var(--bg)}
+.days button.today{border:2px solid var(--accent)}
+.filter{display:flex;flex-direction:column;gap:6px}
+.filter .lbl{font-size:.72rem;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);font-weight:700}
+.chips{display:flex;flex-wrap:wrap;gap:6px}
+.chips button{min-height:44px;padding:0 14px;border-radius:10px;border:1px solid var(--line);background:var(--surface);font-weight:700;font-size:.85rem;cursor:pointer}
+.chips button[aria-pressed="true"]{background:var(--soft);border-color:var(--accent)}
+.list{display:flex;flex-direction:column;border-top:1px solid var(--line)}
+.row{display:grid;grid-template-columns:4.9rem 1fr;gap:10px;align-items:start;padding:12px 0;border-bottom:1px solid var(--line)}
+.row.past{opacity:.45}
+.row.now .time{color:var(--accent)}
+.time{font-variant-numeric:tabular-nums;font-weight:700;padding-top:1px}
+.time small{display:block;font-weight:400;color:var(--muted);font-size:.75rem}
+.info{min-width:0;display:flex;flex-direction:column;gap:4px}
+.info .n{font-weight:700}
+.where{font-size:.85rem;color:var(--muted)}
+.meta{display:flex;flex-wrap:wrap;gap:6px 10px;align-items:center;font-size:.8rem;color:var(--muted)}
+.tag{font-weight:700;font-size:.72rem;letter-spacing:.04em;padding:2px 7px;border-radius:5px;background:var(--soft);color:var(--ink)}
+.tag.free{background:var(--freesoft);color:var(--free)}
+.tag.rule{background:var(--warnsoft);color:var(--warn)}
+.flag{color:var(--warn);font-weight:700}
+.meta a{color:var(--accent);font-weight:700}
+.phone{font-variant-numeric:tabular-nums;user-select:all}
+.empty{color:var(--muted);padding:16px 0;margin:0}
+.btn{min-height:44px;padding:0 12px;border-radius:10px;border:1px solid var(--line);background:var(--surface);font-weight:700;font-size:.85rem;cursor:pointer;color:var(--ink)}
+.btn.primary{background:var(--accent);color:var(--accent-ink);border-color:var(--accent)}
+.note{font-size:.85rem;border-left:3px solid var(--accent);padding:4px 10px;color:var(--muted);margin:0}
+.help{display:flex;flex-direction:column}
+.line{display:grid;grid-template-columns:1fr auto;gap:4px 10px;align-items:center;padding:12px 0;border-bottom:1px solid var(--line)}
+.line .what{font-size:.85rem;color:var(--muted)}
+.line .num{font-variant-numeric:tabular-nums;font-size:1.1rem;font-weight:700;user-select:all}
+.src{font-size:.85rem;color:var(--muted);display:flex;flex-direction:column;gap:6px}
+.src a{color:var(--accent)}
+.toast{position:fixed;left:50%;bottom:calc(20px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);background:var(--ink);color:var(--bg);padding:10px 16px;border-radius:10px;font-weight:700;font-size:.9rem;z-index:20}
+@media (prefers-reduced-motion:no-preference){.days button,.chips button{transition:background .15s,color .15s}}
+</style>
+
+<div class="wrap">
+  <header>
+    <h1>Free Meals</h1>
+    <p class="sub">Sit-down, bagged and hot meals in Surrey and across the Lower Mainland</p>
+  </header>
+
+  <div class="next" id="next" aria-live="polite"></div>
+  <nav class="days" id="days" aria-label="Day of week"></nav>
+  <div class="filter"><span class="lbl">How far</span><div class="chips" id="areas"></div></div>
+  <div class="filter"><span class="lbl">Who it's for</span><div class="chips" id="whos"></div></div>
+  <div class="filter"><span class="lbl">Cost</span><div class="chips" id="costs"></div></div>
+
+  <h2 id="dayTitle"></h2>
+  <div class="list" id="list"></div>
+
+  <h2>Any time of day</h2>
+  <p class="note">Sikh gurdwaras serve langar, a free vegetarian meal, to anyone who walks in. Cover your head (they keep scarves at the door), take your shoes off and wash your hands. Langar is usually served through the day; call ahead late at night.</p>
+  <div class="list" id="allday"></div>
+
+  <h2>Phone numbers</h2>
+  <div class="help" id="help"></div>
+
+  <div class="src" id="sources"></div>
+</div>
+
+<script>
+/* Row: days | start | end | name | venue | address | city | cost | who | kind | phone | how often | note
+   days: 0 Sun … 6 Sat. start "all" = any time. address "@lat,lon" = no street address listed. cost: Free, $ amount, or ? (not listed). */
+const SOURCES=[
+ {id:"sl",name:"Surrey Libraries, Free and low-cost meals",updated:"26 Aug 2026",link:"https://www.surreylibraries.ca/meals"},
+ {id:"211",name:"bc211, Surrey Urban Mission",updated:"checked 7 Nov 2026",link:"https://bc.211.ca/agency-details/surrey-urban-mission-society-sums-9490561"},
+ {id:"van",name:"City of Vancouver open data, Free and low-cost food programs",updated:"pulled 7 Nov 2026",link:"https://opendata.vancouver.ca/explore/dataset/free-and-low-cost-food-programs/"},
+ {id:"nw",name:"Everybody Needs to Eat, New Westminster (via Fraser Health)",updated:"May 2026",link:"https://www.fraserhealth.ca/health-topics-a-to-z/free-and-low-cost-food-directory"},
+ {id:"rmd",name:"City of Richmond, No or low cost community meals",updated:"Nov 2025",link:"https://westwind.sd38.bc.ca/files/westwind/2026/07/No-or-Low-Cost-Community-Meals-and-Food-Programs-Richmond-BC.pdf"},
+ {id:"bby",name:"Burnaby Public Library, Food and meals",updated:"Jan 2026",link:"https://bpl.bc.ca/people-help/community-resources-guide/food-meals"},
+ {id:"tc",name:"Tri-Cities Street Survival Guide (Port Coquitlam)",updated:"Jan 2025",link:"https://www.portcoquitlam.ca/media/file/street-survival-guide-january-2025"},
+ {id:"mr",name:"Ridge Meadows Free and Low-Cost Food Directory",updated:"May 2025",link:"https://www.fraserhealth.ca/-/media/Project/FraserHealth/FraserHealth/Health-Topics/Free-and-low-cost-food-direcotry/RM-FLC-Food-Directory-2025.pdf"},
+ {id:"msn",name:"Mission No-Cost Food Options",updated:"Aug 2026",link:"https://www.fraserhealth.ca/-/media/Project/FraserHealth/FraserHealth/Health-Topics/Free-and-low-cost-food-direcotry/MISSION-NO-COST-FOOD-OPTIONS---Aug-2026_.pdf"},
+ {id:"abb",name:"City of Abbotsford, Prepared meals weekly schedule",updated:"Apr 2026",link:"https://www.abbotsford.ca/sites/default/files/2026-05/Prepared%20meals%20distribution%20weekly%20schedule.pdf"},
+];
+const ROWS=`
+0123456|08:30|09:30|Bagged breakfast|Surrey Urban Mission (SUMS)|10776 King George Blvd|Surrey|Free|all|Bagged breakfast|604-581-5172||
+0123456|12:30|13:30|Bagged lunch|Surrey Urban Mission (SUMS)|10776 King George Blvd|Surrey|Free|all|Bagged lunch|604-581-5172||
+0123456|19:00|20:00|Hot dinner|NightShift Street Ministries|10635 King George Blvd|Surrey|Free|all|Hot dinner|604-953-1114||Free haircuts and nursing too
+12345|14:00|16:00|Afternoon drop-in|NightShift Street Ministries|10635 King George Blvd|Surrey|Free|all|Coffee and snack|604-953-1114||
+12345|17:45|18:45|Community dinner|Storehouse Community Hub|5337 180 St|Cloverdale|?|all|Dinner|778-617-3000||Doors open 5:45, close 6:45. No dinner on stat holidays
+24|11:30|13:00|Hot lunch for women|Sources Women's Place|15318 20 Ave|South Surrey|Free|women|Hot lunch|604-536-9611||Women and their kids. Laundry and showers too
+2|16:00|18:00|King's Banquet soup kitchen|Star of the Sea Hall|15262 Pacific Ave|White Rock|Free|all|Dinner|604-531-5739||By donation if you can, not expected
+3|17:00|18:00|Love One Another dinner|Peace Portal Church|15128 27B Ave|South Surrey|Free|all|Dinner|604-531-4733||
+3|12:00|13:30|Celebrating Community lunch|Alexandra Neighbourhood House|2916 McBride Ave|South Surrey|$12|all|Lunch|604-535-0015|2nd Wednesday, Sept to June|Register by noon the Monday before. Tell staff if you can't pay
+12345|16:00|17:30|Seniors dinner|Surrey Memorial Hospital cafeteria|13750 96 Ave|Surrey|$4.99|seniors|Dinner|1-877-935-5669||65 and over. Not on stat holidays
+12345|08:00|10:00|Seniors breakfast|Peace Arch Hospital cafeteria|15521 Russell Ave|White Rock|$4.99|seniors|Breakfast|1-877-935-5669||65 and over. Not on stat holidays
+135|14:00|20:00|Teen drop-in dinner|Mackie's Place|#210, 13889 104 Ave|Surrey|Free|youth|Snacks and dinner|778-394-4600||Teens. Friday closes at 6 pm
+0123456|12:30|13:30|Lunch|Gateway of Hope (Salvation Army)|5787 Langley Bypass|Langley|Free|all|Lunch|604-514-7375||Every day of the year
+1234|19:00|20:00|Hot dinner|NightShift Street Ministries|5708 Glover Rd|Langley|Free|all|Hot dinner|604-953-1114||
+0123456|11:00|12:00|Langar lunch|Gurdwara, Queensborough|347 Wood St|New Westminster|Free|all|Vegetarian hot meal|||Dine in
+0123456|17:00|19:30|Langar dinner|Gurdwara, Queensborough|347 Wood St|New Westminster|Free|all|Vegetarian hot meal|||Dine in
+6|11:00|12:00|Take-away brunch|Holy Trinity Cathedral|514 Carnarvon St|New Westminster|Free|all|Brunch|||
+5|17:00|19:30|Friday dinner|Lookout with St. Vincent de Paul|The Russell, Alexander St at Carnarvon St|New Westminster|Free|all|Dinner|||Dine in or take out
+0|12:00|13:00|Sunday lunch|Lookout with St. Vincent de Paul|The Russell, Alexander St at Carnarvon St|New Westminster|Free|all|Lunch||1st and 2nd Sunday|
+12345|11:30|12:30|Eat-in lunch|Union Gospel Mission New Westminster|658 Clarkson St|New Westminster|Free|all|Lunch|||
+3|17:30|19:00|Community dinner|St. Stephen the Martyr Anglican Church|9887 Cameron St|Burnaby|Free|all|Dinner|604-421-0472|3rd Wednesday|Vegan option every time
+0|17:00|18:00|Sunday dinner|Friendship Baptist Church|2950 Dewdney Trunk Rd|Coquitlam|Free|all|Dinner|||Doors open 4:30
+3|10:00|13:00|Community kitchen|Trinity United Church|2211 Prairie Ave|Port Coquitlam|Free|all|Hot meal|||No ID needed. Main doors off the parking lot. No take-out
+1|17:00|18:00|Monday dinner|Richmond Presbyterian Church|7111 No. 2 Rd|Richmond|Free|all|Sit-down dinner|604-277-5410||Holidays included
+2|17:30|19:00|Community dinner|Peace Mennonite Church|11571 Daniels Rd|Richmond|Free|all|Sit-down dinner|604-202-7478|1st and 3rd Tuesday|Not July or August
+2|17:30|18:00|Take-away dinner|St. Alban's Church|7260 St. Albans Rd|Richmond|Free|all|Take-away dinner|604-278-2770||
+5|11:30|12:00|Friday lunch|St. Alban's Church|7260 St. Albans Rd|Richmond|Free|all|Sit-down lunch|604-278-2770||Not in August
+3|18:00|18:45|Wednesday dinner|Refuge Church|10200 No. 5 Rd|Richmond|Free|all|Sit-down dinner|604-274-2811||Not July or August
+4|17:30|18:30|Thursday dinner|Gilmore Park United Church|8060 No. 1 Rd|Richmond|Free|all|Sit-down dinner|604-277-5377||January to November
+6|18:30|19:30|Saturday dinner|St. Joseph the Worker Parish|4451 Williams Rd|Richmond|Free|all|Sit-down dinner|604-277-8353||
+12345|19:00|21:00|Food truck|Salvation Army mobile truck|5800 Cedarbridge Way|Richmond|Free|all|Take-away meal|604-277-2424||Food bank parking lot
+12345|11:00|13:30|Low-cost lunch|Minoru Centre for Active Living, seniors centre|7191 Granville Ave|Richmond|$|all|Take-away lunch|604-238-8450||All welcome
+6|17:30|18:30|Community supper|Golden Ears United Church|22165 Dewdney Trunk Rd|Maple Ridge|Free|all|Dinner|604-463-9611||
+06|11:00|12:00|Weekend brunch|Salvation Army Ridge Meadows|22188 Lougheed Hwy|Maple Ridge|Free|all|Brunch|604-463-8296||
+135|08:00|09:00|Breakfast|Hope Central|33129 Railway Ave|Mission|Free|all|Breakfast|604-854-0780||Wednesday drop-in runs 8 to 10:30
+024|18:00|19:00|Supper|Hope Central|33129 Railway Ave|Mission|Free|all|Dinner|604-854-0780||
+24|09:00|10:00|Breakfast|Mission Friendship Centre|33150 1st Ave|Mission|Free|all|Breakfast|604-826-1281||
+12345|12:00|13:00|Lunch|Mission Friendship Centre|33150 1st Ave|Mission|Free|all|Lunch|604-826-1281||
+12345|13:00|17:00|Youth lunch|Mission Youth House|7368 Proctor Ave|Mission|Free|youth|Lunch|604-826-2229||Ages 12 to 24
+0123456|12:00|13:00|Lunch|Salvation Army Centre of Hope (The Meal Centre)|34081 Gladys Ave|Abbotsford|Free|all|Lunch|604-852-9305||Walk in, no questions. Brunch on Sundays
+0|16:00|19:00|Community dinner|The Stream Ministry|14-33550 South Fraser Way|Abbotsford|Free|all|Dinner|604-556-1668|2nd and 4th Sunday|Doors at 4, dinner at 6
+0123456|18:00|19:00|Youth dinner|Cyrus Centre|2616 Ware St|Abbotsford|Free|youth|Dinner|||Up to age 24
+0123456|11:00|12:00|Lunch|Union Gospel Mission|601 E Hastings St|Vancouver|Free|all|Lunch|604-253-3323||Tickets handed out at 10:45
+12345|18:00|19:00|Dinner|Union Gospel Mission|601 E Hastings St|Vancouver|Free|all|Dinner|604-253-3323||Tickets at 5:45
+06|16:00|17:00|Weekend dinner|Union Gospel Mission|601 E Hastings St|Vancouver|Free|all|Dinner|604-253-3323||Tickets at 3:45
+12456|11:00|12:00|Free lunch|The Door is Open|373 E Cordova St|Vancouver|Free|all|Lunch|||
+0|11:30|12:30|Free lunch|The Door is Open|373 E Cordova St|Vancouver|Free|all|Lunch|||
+3|09:00|10:00|Free meal|The Door is Open|373 E Cordova St|Vancouver|Free|all|Breakfast|||
+3|19:00|20:00|Wednesday supper|Gospel Mission Society at The Door is Open|373 E Cordova St|Vancouver|Free|all|Sandwiches or hot food|||
+0123456|10:30|11:30|Hot breakfast|The Dugout|59 Powell St|Vancouver|Free|all|Hot breakfast|604-685-5239||
+12345|11:00|12:00|Lunch|Salvation Army Harbour Light|119 E Cordova St|Vancouver|Free|all|Lunch|||
+6|16:00|17:00|Saturday meal|Salvation Army Harbour Light|119 E Cordova St|Vancouver|Free|all|Dinner|||
+12345|12:00|13:00|Community lunch|First United Church|320 E Hastings St|Vancouver|Free|all|Lunch|||Not on income assistance days or stat holidays
+6|13:00|14:00|Hot meal|Guru Nanak's Free Kitchen|Outside Carnegie Centre, 401 Main St|Vancouver|Free|all|Vegetarian hot meal|||
+0|12:00|13:00|Hot meal|Guru Nanak's Free Kitchen|Outside Carnegie Centre, 401 Main St|Vancouver|Free|all|Vegetarian hot meal|||
+12345|17:30|18:30|Evening meal|Muslim Care Centre|@49.28107,-123.10120|Vancouver|Free|all|Hot meal|||Downtown Eastside; the list gives no street address
+6|13:00|14:00|Saturday meal|Muslim Care Centre|@49.28107,-123.10120|Vancouver|Free|all|Hot meal|||Downtown Eastside; the list gives no street address
+0|12:00|13:00|Sunday meal|Muslim Care Centre|@49.28107,-123.10120|Vancouver|Free|all|Hot meal|||Downtown Eastside; the list gives no street address
+6|11:00|12:00|Soup and bagged lunch|Food on the Corner|@49.28272,-123.09861|Vancouver|Free|all|Soup and bagged lunch|||Downtown Eastside; the list gives no street address
+0|09:30|11:30|Sunday breakfast|Three Links Foundation|@49.26475,-123.13704|Vancouver|Free|all|Breakfast|||For people who are homeless. Fairview; the list gives no street address
+0|11:00|12:00|Club Freedom service and meal|CityReach|@49.26116,-123.04891|Vancouver|Free|all|Hot meal|604-254-2489||Worship service with the meal. Renfrew area
+3|12:30|14:00|Hot lunch|DTES Neighbourhood House|573 E Hastings St|Vancouver|Free|all|Hot lunch|||Open to everyone
+13|10:00|12:00|Oatmeal|DTES Neighbourhood House|573 E Hastings St|Vancouver|Free|all|Breakfast|||
+4|16:00|17:00|DUDES Club dinner|DUDES Club|@49.28278,-123.09092|Vancouver|Free|men|Dinner|||Men first; extras handed out to anyone
+012456|12:00|14:00|Take-out lunch|DTES Women's Centre|302 Columbia St|Vancouver|Free|women|Take-out lunch|||Women only. Coffee and snacks till 4
+12345|13:00|14:00|Lunch|YWCA Crabtree Corner|533 E Hastings St|Vancouver|Free|women|Lunch|||Women and children. Not on income assistance days
+0123456|10:30|16:30|Snacks and coffee|Lookout Powell St. Getaway|528 Powell St|Vancouver|Free|all|Snacks|||Snacks at 10:30, 1 and 4
+0123456|09:00|20:00|Cheap cafeteria|Carnegie Centre|401 Main St|Vancouver|$2.25+|all|Breakfast, lunch, dinner|||Breakfast $2.25 (9–11), lunch $2.75 (12–4), dinner $3.50 (5–8)
+0123456|09:00|19:00|Cheap cafeteria|Gathering Place|609 Helmcken St|Vancouver|$2.25+|all|Breakfast, lunch, dinner|||Breakfast $2.25 (9–12), lunch $2.75 (11:30–4:30), dinner $3.50 (4:30–7)
+0123456|10:00|17:50|Cheap cafeteria|Evelyne Saller Centre|320 Alexander St|Vancouver|$|all|Breakfast, lunch, dinner|||Breakfast 10–12, lunch 11:30–3, dinner 3–5:50
+145|11:30|12:30|Maundy Cafe|Christ Church Cathedral|690 Burrard St|Vancouver|Free|all|Lunch|||
+1|17:30|19:30|Oasis Cafe|Tenth Church|11 W 10th Ave|Vancouver|Free|all|Dinner|||Dine in. Enter by the alley at Ontario St
+2|11:00|13:00|Oasis Cafe|Tenth Church|11 W 10th Ave|Vancouver|Free|all|Lunch|||Dine in. Enter by the alley at Ontario St
+2|11:30|12:30|Community meal|St. Mary's Kerrisdale|2490 W 37th Ave|Vancouver|Free|all|Sit-down lunch|||
+4|18:00|19:00|Bryn's Neighbourhood Table|St. Augustine's Anglican Church|8680 Hudson St|Vancouver|Free|all|Sit-down dinner|||Coffee from 5:30
+4|12:00|13:00|Open Table|Cityview Church|4370 Sophia St|Vancouver|Free|all|Hot lunch|||With a short service
+6|08:00|08:30|Morning Star breakfast|Collingwood Neighbourhood House|5288 Joyce St|Vancouver|Free|all|Breakfast|604-435-0323||Showers and clothing from 7
+6|07:30|09:00|Saturday breakfast|Kitsilano Community Centre|2690 Larch St|Vancouver|Free|all|Hot breakfast||2nd and 4th Saturday|For people who are homeless. Showers and clean clothes too
+5|12:00|13:00|Community lunch|Mount Pleasant Neighbourhood House|800 E Broadway|Vancouver|$6|all|Lunch|||
+2|11:00|13:00|Seniors lunch|Kitsilano Neighbourhood House|2305 W 7th Ave|Vancouver|?|seniors|Lunch|||Drop in
+12345|09:00|17:00|Youth meals|Covenant House|@49.27516,-123.12670|Vancouver|Free|youth|Breakfast and hot meal|||Ages 16 to 24. Breakfast 9–12, meal 3:30–5
+0123456|20:00|21:00|Youth dinner|Directions Youth Services|@49.27957,-123.12782|Vancouver|Free|youth|Dinner|604-633-1472||Under 25. Intake first
+`;
+const ALLDAY=[
+ ["Guru Nanak Sikh Gurdwara","7050 120 St","Surrey"],
+ ["Gurdwara Sahib Dasmesh Darbar","12885 85 Ave","Surrey"],
+ ["Gurdwara Dukh Nivaran Sahib","15561 Fraser Hwy","Surrey"],
+ ["Khalsa Diwan Society (Ross Street Temple)","8000 Ross St","Vancouver"],
+ ["Akali Singh Sikh Society","1890 Skeena St","Vancouver"],
+ ["Gur Sikh Temple","33089 South Railway Ave","Abbotsford"],
+];
+const HELP=[
+ {name:"BC211",what:"Finds food, shelter and help anywhere in BC, 24/7. Call or text",num:"211"},
+ {name:"Surrey Urban Mission (SUMS)",what:"Breakfast and lunch every day, Whalley",num:"604-581-5172"},
+ {name:"Gateway of Hope",what:"Lunch every day, Langley",num:"604-514-7375"},
+ {name:"Union Gospel Mission",what:"Lunch every day, dinner most days, Vancouver",num:"604-253-3323"},
+ {name:"Suicide Crisis Helpline",what:"Call or text, 24/7",num:"988"},
+ {name:"Emergency",what:"Police, fire, ambulance",num:"911"},
+];
+
+const DAYS=["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"];
+const AREAS=[["surrey","Surrey"],["near","+ Nearby"],["far","+ Lower Mainland"]];
+const RANK={surrey:0,near:1,far:2};
+const CITY_AREA={"Surrey":"surrey","South Surrey":"surrey","Cloverdale":"surrey",
+ "White Rock":"near","Delta":"near","Langley":"near","New Westminster":"near","Burnaby":"near","Coquitlam":"near","Port Coquitlam":"near","Richmond":"near"};
+const WHO_LABEL={women:"Women only",youth:"Youth only",seniors:"Seniors",men:"Men first",members:"Members only"};
+const WHOS=[["all","Open to anyone"],["any","Include programs with rules"]];
+const COSTS=[["free","Free"],["cheap","Free + cheap"]];
+
+const ALL=ROWS.trim().split("\n").filter(Boolean).flatMap(line=>{
+  const [days,t,end,name,venue,addr,city,cost,who,kind,phone,often,note]=line.split("|");
+  const coord=addr.startsWith("@")?addr.slice(1):"";
+  const where=(venue?venue+", ":"")+(coord?city:addr+", "+city);
+  const m={t,end,name,venue,addr:coord?"":addr,coord,city,cost,who,kind,phone,often,note,where,area:CITY_AREA[city]||"far"};
+  return [...days].map(d=>({...m,d:+d,id:d+t+venue+name}));
+});
+
+const store={get(k,f){try{const v=localStorage.getItem(k);return v==null?f:JSON.parse(v)}catch(e){return f}},
+  set(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}}};
+let area=store.get("food-area","surrey"), whoF=store.get("food-who","all"), costF=store.get("food-cost","free");
+let day=new Date().getDay();
+
+const mins=t=>{const[h,m]=t.split(":").map(Number);return h*60+m};
+const fmt=t=>{let[h,m]=t.split(":").map(Number);const ap=h>=12?"PM":"AM";h=h%12||12;return h+":"+String(m).padStart(2,"0")+" "+ap};
+const endOf=m=>m.end?mins(m.end):mins(m.t)+60;
+const esc=s=>String(s??"").replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const maps=m=>"https://www.google.com/maps/search/?api=1&query="+encodeURIComponent(m.coord||(m.addr+", "+m.city+", BC"));
+const tel=n=>"tel:"+n.replace(/[^\d+]/g,"");
+const isFree=m=>m.cost==="Free";
+const match=m=>RANK[m.area]<=RANK[area]&&(whoF==="any"||m.who==="all")&&(costF==="cheap"||isFree(m));
+const sortKey=(a,b)=>mins(a.t)-mins(b.t)||RANK[a.area]-RANK[b.area];
+
+function links(m){
+  const a=[`<a href="${maps(m)}" target="_blank" rel="noopener">Directions</a>`];
+  if(m.phone) a.push(`<a class="phone" href="${tel(m.phone)}">Call ${esc(m.phone)}</a>`);
+  return a.join("");
+}
+function costTag(m){
+  if(isFree(m)) return `<span class="tag free">Free</span>`;
+  if(m.cost==="?") return `<span class="tag">Cost not listed</span>`;
+  return `<span class="tag">${m.cost==="$"?"Low cost":esc(m.cost)}</span>`;
+}
+function nextUp(){
+  const now=new Date(),d=now.getDay(),cur=now.getHours()*60+now.getMinutes();
+  for(let off=0;off<8;off++){
+    const dd=(d+off)%7, list=ALL.filter(m=>m.d===dd&&match(m)&&!m.often).sort(sortKey);
+    for(const m of list){
+      const s=mins(m.t);
+      if(off===0&&endOf(m)<=cur) continue;
+      if(off===0&&s<=cur) return {m,label:"Serving now",when:`Until ${fmt(m.end||m.t)}`};
+      const diff=off*1440+s-cur,h=Math.floor(diff/60),mm=diff%60;
+      const rel=diff<60?`in ${mm} min`:diff<1440?`in ${h} h ${mm} min`:"";
+      return {m,label:"Next meal",when:`${off===0?"Today":off===1?"Tomorrow":DAYS[dd]} · ${fmt(m.t)}${rel?" · "+rel:""}`};
+    }
+  }
+  return null;
+}
+function render(){
+  const n=nextUp();
+  document.getElementById("next").innerHTML=n
+    ?`<span class="eyebrow">${n.label}</span><span class="name">${esc(n.m.venue)}</span><span class="when">${esc(n.m.kind)} · ${n.when}</span><span class="when">${esc(n.m.coord?n.m.city:n.m.addr+", "+n.m.city)}</span><span class="when"><a href="${maps(n.m)}" target="_blank" rel="noopener">Directions</a>${n.m.phone?` · <a href="${tel(n.m.phone)}">Call ${esc(n.m.phone)}</a>`:""}</span>`
+    :`<span class="eyebrow">Next meal</span><span class="name">Nothing matches these filters</span>`;
+  const today=new Date().getDay();
+  document.getElementById("days").innerHTML=[1,2,3,4,5,6,0].map(i=>{const c=ALL.filter(m=>m.d===i&&match(m)).length;return `<button type="button" id="day-${i}" class="${i===today?"today":""}" aria-pressed="${i===day}" data-d="${i}" aria-label="${DAYS[i]}${i===today?", today":""}, ${c} meals">${DAYS[i].slice(0,3)}<small>${c}</small></button>`}).join("");
+  document.getElementById("areas").innerHTML=AREAS.map(([k,l])=>`<button type="button" id="area-${k}" aria-pressed="${k===area}" data-a="${k}">${l}</button>`).join("");
+  document.getElementById("whos").innerHTML=WHOS.map(([k,l])=>`<button type="button" id="who-${k}" aria-pressed="${k===whoF}" data-w="${k}">${l}</button>`).join("");
+  document.getElementById("costs").innerHTML=COSTS.map(([k,l])=>`<button type="button" id="cost-${k}" aria-pressed="${k===costF}" data-c="${k}">${l}</button>`).join("");
+  const list=ALL.filter(m=>m.d===day&&match(m)).sort(sortKey);
+  document.getElementById("dayTitle").textContent=(day===today?"Today, ":"")+DAYS[day]+" · "+list.length+" meal"+(list.length===1?"":"s");
+  const cur=new Date().getHours()*60+new Date().getMinutes();
+  document.getElementById("list").innerHTML=list.length?list.map(m=>{
+    const isT=day===today,cls=isT&&endOf(m)<=cur?"past":isT&&mins(m.t)<=cur?"now":"";
+    return `<div class="row ${cls}">
+      <span class="time">${fmt(m.t)}${m.end?`<small>to ${fmt(m.end)}</small>`:""}</span>
+      <div class="info"><span class="n">${esc(m.venue)}</span>
+        <span class="where">${esc(m.kind)} · ${esc(m.coord?m.city:m.addr+", "+m.city)}</span>
+        <span class="meta">${costTag(m)}${m.who!=="all"?`<span class="tag rule">${WHO_LABEL[m.who]}</span>`:""}${cls==="now"?"<span>serving now</span>":""}${m.often?`<span class="flag">${esc(m.often)} only</span>`:""}${links(m)}</span>
+        ${m.note?`<span class="where">${esc(m.note)}</span>`:""}
+      </div>
+    </div>`}).join(""):`<div class="empty"><p style="margin:0 0 10px">Nothing on ${DAYS[day]} with these filters.</p><button type="button" class="btn primary" data-reset="1">Show everything</button></div>`;
+  document.getElementById("allday").innerHTML=ALLDAY.filter(([, ,c])=>RANK[CITY_AREA[c]||"far"]<=RANK[area]).map(([n,a,c])=>`<div class="row"><span class="time">Any time</span><div class="info"><span class="n">${esc(n)}</span><span class="where">Langar · ${esc(a)}, ${esc(c)}</span><span class="meta"><span class="tag free">Free</span><a href="${maps({addr:a,city:c})}" target="_blank" rel="noopener">Directions</a></span></div></div>`).join("")||`<p class="empty">Widen "How far" to see gurdwaras outside Surrey.</p>`;
+  document.getElementById("help").innerHTML=HELP.map(h=>`<div class="line"><div><div style="font-weight:700">${h.name}</div><div class="what">${h.what}</div><div class="num">${h.num}</div></div><div style="display:flex;gap:6px"><a class="btn primary" style="display:inline-flex;align-items:center;text-decoration:none" href="${tel(h.num)}">Call</a><button class="btn" type="button" data-copy="${h.num}">Copy</button></div></div>`).join("");
+  document.getElementById("sources").innerHTML="<b>Where this comes from</b>"+SOURCES.map(s=>`<span>${esc(s.name)} · ${esc(s.updated)} · <a href="${s.link}" target="_blank" rel="noopener">source</a></span>`).join("")
+    +`<span>Pulled together 7 Nov 2026. Gurdwara addresses are well-known locations, not from a meal list. Times change and some programs pause on holidays, so call ahead when you can.</span>`;
+}
+function toast(msg){const t=document.createElement("div");t.className="toast";t.textContent=msg;document.body.appendChild(t);setTimeout(()=>t.remove(),1600)}
+document.addEventListener("click",e=>{
+  const b=e.target.closest("button"); if(!b) return; const ds=b.dataset;
+  if(ds.d) day=+ds.d;
+  else if(ds.a){area=ds.a;store.set("food-area",area)}
+  else if(ds.w){whoF=ds.w;store.set("food-who",whoF)}
+  else if(ds.c){costF=ds.c;store.set("food-cost",costF)}
+  else if(ds.reset){area="far";whoF="any";costF="cheap"}
+  else if(ds.copy){const t=ds.copy;try{navigator.clipboard.writeText(t).then(()=>toast("Copied "+t),()=>toast("Press and hold the number to copy"))}catch(err){toast("Press and hold the number to copy")}return}
+  else return;
+  render();
+});
+render();
+setInterval(render,60000);
+</script>
+
+<script>if("serviceWorker" in navigator){addEventListener("load",()=>navigator.serviceWorker.register("sw.js").catch(()=>{}))}</script>
+</body></html>

@@ -1,7 +1,7 @@
 {
   "name": "Surrey Meetings",
   "short_name": "Meetings",
-  "description": "AA, NA, CA, CMA and SA meetings around Surrey, BC",
+  "description": "AA, NA, CA, CMA and SA meetings in Surrey and across the Lower Mainland",
   "start_url": "./",
   "scope": "./",
   "display": "standalone",
